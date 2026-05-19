@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>漣一設計 工地會議紀錄</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  
+  :root {
+    --bg: #F5F1EA;
+    --paper: #FFFFFF;
+    --ink: #1C1C1C;
+    --ink-soft: #5A5A5A;
+    --line: #D9D2C5;
+    --accent: #3A2E1F;
+    --space-bg: #EDE5D3;
+    --type-decision: #4A6B3D;
+    --type-todo: #C99A4E;
+    --type-change: #B8551E;
+    --type-question: #5A7BA8;
+  }
+  
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  .header {
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+    padding: 18px 20px;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .header-inner { display: flex; align-items: center; gap: 14px; max-width: 900px; margin: 0 auto; }
+  .logo {
+    width: 44px; height: 44px;
+    border: 1.5px solid var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; line-height: 1.1;
+    letter-spacing: 1px;
+  }
+  .header-title { font-size: 16px; font-weight: 700; letter-spacing: 0.5px; }
+  .header-sub { font-size: 11px; color: var(--ink-soft); letter-spacing: 2px; margin-top: 2px; }
+  
+  .back-link {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--ink-soft);
+    text-decoration: none;
+    padding: 6px 10px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+  }
+  .back-link:hover { color: var(--ink); border-color: var(--ink); }
+  
+  .container { max-width: 900px; margin: 0 auto; padding: 20px 16px 120px; }
+  
+  .section {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  
+  .section-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: space-between;
+    background: linear-gradient(180deg, #FAF7F1, var(--paper));
+    gap: 12px;
+  }
+  .section-title { font-size: 14px; font-weight: 700; letter-spacing: 1.5px; }
+  .section-title-en {
+    display: block; font-size: 9px; color: var(--ink-soft);
+    letter-spacing: 2px; margin-top: 2px; font-weight: 400;
+  }
+  
+  .section-body { padding: 20px; }
+  
+  /* Form Fields */
+  .field-group { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 20px; }
+  .field-full { grid-column: 1 / -1; }
+  .field { display: flex; flex-direction: column; }
+  .field label {
+    font-size: 11px; color: var(--ink-soft);
+    letter-spacing: 1px; margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+  .field input, .field textarea, .field select {
+    border: none;
+    border-bottom: 1px solid var(--line);
+    background: transparent;
+    padding: 6px 0;
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--ink);
+    outline: none;
+    border-radius: 0;
+    -webkit-appearance: none;
+  }
+  .field input:focus, .field textarea:focus, .field select:focus {
+    border-bottom-color: var(--ink);
+  }
+  .field textarea { min-height: 60px; resize: vertical; }
+  
+  /* View Switcher */
+  .view-switch {
+    display: flex; gap: 0;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    overflow: hidden;
+    background: var(--paper);
+  }
+  .view-switch button {
+    border: none; background: transparent;
+    padding: 7px 14px;
+    font-size: 12px; font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--ink-soft);
+    letter-spacing: 0.5px;
+  }
+  .view-switch button.active {
+    background: var(--ink); color: var(--paper);
+  }
+  
+  /* Type Statistics */
+  .type-stats {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    margin-bottom: 16px;
+    padding: 16px 18px;
+  }
+  .type-stats-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .type-stats-title {
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 1.5px;
+  }
+  .type-stats-total {
+    font-size: 11px; color: var(--ink-soft);
+    letter-spacing: 1px;
+  }
+  .type-stats-total b {
+    color: var(--ink);
+    font-size: 14px;
+    margin: 0 2px;
+  }
+  .type-stats-grid {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .type-stat-pill {
+    border-radius: 14px;
+    padding: 5px 12px;
+    font-size: 12px;
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--paper);
+  }
+  .type-stat-pill b {
+    background: rgba(255,255,255,0.25);
+    border-radius: 9px;
+    min-width: 18px;
+    height: 18px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 10px;
+    padding: 0 5px;
+  }
+  .type-stat-pill.decision { background: var(--type-decision); }
+  .type-stat-pill.todo { background: var(--type-todo); }
+  .type-stat-pill.change { background: var(--type-change); }
+  .type-stat-pill.question { background: var(--type-question); }
+  .type-stats-empty {
+    color: var(--ink-soft);
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+  
+  /* Group */
+  .item-group {
+    margin-bottom: 18px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--paper);
+  }
+  .item-group-header {
+    padding: 12px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--line);
+    color: var(--paper);
+  }
+  .item-group-header.decision { background: var(--type-decision); }
+  .item-group-header.todo { background: var(--type-todo); }
+  .item-group-header.change { background: var(--type-change); }
+  .item-group-header.question { background: var(--type-question); }
+  .item-group-header.space { background: var(--space-bg); color: var(--ink); }
+  
+  .item-group-title {
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 2px;
+  }
+  .item-group-count {
+    font-size: 11px;
+    letter-spacing: 1px;
+    opacity: 0.85;
+  }
+  .item-group-body {
+    padding: 14px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  
+  /* Item Cards */
+  .item-card {
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--paper);
+  }
+  .item-card:focus-within { border-color: var(--ink); }
+  
+  .item-head {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 14px;
+    background: #FAF7F1;
+    border-bottom: 1px solid var(--line);
+    flex-wrap: wrap;
+  }
+  .item-num {
+    width: 26px; height: 26px;
+    background: var(--ink); color: var(--paper);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .item-type-tag, .item-space-tag {
+    font-size: 11px; font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 10px;
+    letter-spacing: 0.5px;
+  }
+  .item-type-tag {
+    color: var(--paper);
+  }
+  .item-type-tag.decision { background: var(--type-decision); }
+  .item-type-tag.todo { background: var(--type-todo); }
+  .item-type-tag.change { background: var(--type-change); }
+  .item-type-tag.question { background: var(--type-question); }
+  
+  .item-space-tag {
+    background: var(--space-bg);
+    color: var(--accent);
+  }
+  .item-title-input {
+    flex: 1; min-width: 140px;
+    border: none; background: transparent;
+    font-size: 14px; font-weight: 600;
+    font-family: inherit;
+    outline: none;
+    padding: 4px 0;
+  }
+  .item-delete {
+    background: none; border: none;
+    color: var(--ink-soft);
+    font-size: 18px; cursor: pointer;
+    padding: 4px 8px; line-height: 1;
+  }
+  .item-delete:hover { color: #B8551E; }
+  
+  .item-body { padding: 14px; }
+  
+  .item-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 14px;
+    margin-bottom: 12px;
+  }
+  .item-row .field-full { grid-column: 1 / -1; }
+  
+  .select-wrap {
+    position: relative;
+    border-bottom: 1px solid var(--line);
+  }
+  .select-wrap select {
+    width: 100%;
+    appearance: none;
+    -webkit-appearance: none;
+    border: none;
+    background: transparent;
+    padding: 6px 24px 6px 0;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--ink);
+    outline: none;
+    cursor: pointer;
+  }
+  .select-wrap::after {
+    content: '▾';
+    position: absolute;
+    right: 4px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--ink-soft);
+    pointer-events: none;
+    font-size: 11px;
+  }
+  
+  /* Photo */
+  .photo-area { margin-top: 10px; }
+  .photo-label {
+    font-size: 11px; color: var(--ink-soft);
+    letter-spacing: 1px; margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 6px;
+  }
+  .photo-slot {
+    aspect-ratio: 1;
+    border: 1.5px dashed var(--line);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink-soft);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    background: #FAF7F1;
+  }
+  .photo-slot:hover { border-color: var(--ink); }
+  .photo-slot input[type="file"] {
+    position: absolute; inset: 0;
+    opacity: 0; cursor: pointer;
+  }
+  .photo-slot .plus { font-size: 22px; font-weight: 300; }
+  .photo-slot img { width: 100%; height: 100%; object-fit: cover; }
+  .photo-slot .remove-photo {
+    position: absolute; top: 3px; right: 3px;
+    background: rgba(0,0,0,0.65); color: white;
+    border: none; width: 20px; height: 20px;
+    border-radius: 50%; cursor: pointer;
+    font-size: 13px; line-height: 1;
+    display: none;
+  }
+  .photo-slot.has-photo .remove-photo { display: block; }
+  .photo-slot.has-photo .plus { display: none; }
+  
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border: 1px solid var(--ink);
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 13px; font-weight: 600;
+    font-family: inherit;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s;
+  }
+  .btn:hover { background: var(--ink); color: var(--paper); }
+  .btn-primary { background: var(--ink); color: var(--paper); }
+  .btn-primary:hover { background: var(--accent); border-color: var(--accent); }
+  
+  /* Signature */
+  .sig-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .sig-canvas-wrap {
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: var(--paper);
+    height: 140px;
+    position: relative;
+    overflow: hidden;
+  }
+  .sig-canvas-wrap canvas { width: 100%; height: 100%; touch-action: none; display: block; }
+  .sig-placeholder {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--line); font-size: 13px;
+    pointer-events: none;
+  }
+  .sig-clear {
+    position: absolute; top: 6px; right: 8px;
+    background: transparent; border: none;
+    color: var(--ink-soft); font-size: 11px;
+    cursor: pointer; padding: 4px 8px;
+  }
+  .sig-meta {
+    margin-top: 8px;
+    font-size: 11px; color: var(--ink-soft);
+    letter-spacing: 1px;
+    display: flex; justify-content: space-between;
+  }
+  
+  /* Action Bar */
+  .action-bar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: var(--paper);
+    border-top: 1px solid var(--line);
+    padding: 12px 16px;
+    z-index: 50;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.04);
+  }
+  .action-bar-inner {
+    max-width: 900px; margin: 0 auto;
+    display: flex; gap: 10px; width: 100%;
+  }
+  .action-bar .btn { flex: 1; }
+  
+  /* Add Item Button */
+  .add-item-btn {
+    width: 100%;
+    padding: 14px;
+    border: 1.5px dashed var(--line);
+    background: transparent;
+    color: var(--ink-soft);
+    font-size: 13px; font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: 14px;
+    font-family: inherit;
+  }
+  .add-item-btn:hover { border-color: var(--ink); color: var(--ink); }
+  
+  /* Modal */
+  .modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 200;
+  }
+  .modal-backdrop.active { display: flex; }
+  .modal {
+    background: var(--paper);
+    border-radius: 12px 12px 0 0;
+    width: 100%;
+    max-width: 900px;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 20px;
+    animation: slideUp 0.25s ease-out;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .modal-title {
+    font-size: 16px; font-weight: 700;
+    letter-spacing: 1px; margin-bottom: 4px;
+  }
+  .modal-sub {
+    font-size: 12px; color: var(--ink-soft);
+    margin-bottom: 18px;
+  }
+  .modal-step { margin-bottom: 18px; }
+  .modal-step-label {
+    font-size: 11px; color: var(--ink-soft);
+    letter-spacing: 1.5px; margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .chip-group { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: var(--paper);
+    font-size: 13px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .chip.active {
+    background: var(--ink); color: var(--paper);
+    border-color: var(--ink);
+  }
+  /* Type chip 特殊樣式 */
+  .chip.type-chip.active.decision { background: var(--type-decision); border-color: var(--type-decision); }
+  .chip.type-chip.active.todo { background: var(--type-todo); border-color: var(--type-todo); }
+  .chip.type-chip.active.change { background: var(--type-change); border-color: var(--type-change); }
+  .chip.type-chip.active.question { background: var(--type-question); border-color: var(--type-question); }
+  
+  .modal-actions {
+    display: flex; gap: 10px;
+    position: sticky; bottom: 0;
+    background: var(--paper);
+    padding-top: 16px;
+    margin-top: 8px;
+    border-top: 1px solid var(--line);
+  }
+  .modal-actions .btn { flex: 1; }
+  
+  /* Print */
+  @media print {
+    @page { margin: 12mm; size: A4; }
+    body { background: white; font-size: 11pt; }
+    .header { position: static; }
+    .action-bar, .add-item-btn, .item-delete, .sig-clear,
+    .photo-slot .remove-photo, .view-switch, .modal-backdrop,
+    .back-link { display: none !important; }
+    .photo-slot:not(.has-photo) { display: none; }
+    .section, .item-card, .item-group { break-inside: avoid; border: 1px solid #999; }
+    .container { padding: 0; max-width: 100%; }
+    input, textarea, select {
+      border-bottom: 1px solid #ccc !important;
+      background: white !important;
+    }
+    .item-group-header,
+    .item-type-tag,
+    .item-space-tag,
+    .type-stat-pill {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .field-group { grid-template-columns: 1fr; }
+    .item-row { grid-template-columns: 1fr; }
+    .sig-row { grid-template-columns: 1fr; }
+    .container { padding: 14px 12px 110px; }
+    .section-body { padding: 16px; }
+    .section-header { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">漣一<br>設計</div>
+    <div>
+      <div class="header-title">工地會議紀錄</div>
+      <div class="header-sub">SITE MEETING MINUTES</div>
+    </div>
+    <a href="../index.html" class="back-link">← 首頁</a>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- 類型統計 -->
+  <div class="type-stats">
+    <div class="type-stats-header">
+      <div class="type-stats-title">議題統計</div>
+      <div class="type-stats-total">共 <b id="stat-total">0</b> 筆</div>
+    </div>
+    <div class="type-stats-grid" id="type-stats-grid">
+      <div class="type-stats-empty">尚無議題</div>
+    </div>
+  </div>
+
+  <!-- 會議基本資訊 -->
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-title">會議資訊</div>
+        <span class="section-title-en">MEETING INFO</span>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="field-group">
+        <div class="field field-full">
+          <label>案名</label>
+          <input type="text" placeholder="例：台中國泰 THE PARK 住宅裝修工程案">
+        </div>
+        <div class="field">
+          <label>會議日期</label>
+          <input type="date" id="meeting-date">
+        </div>
+        <div class="field">
+          <label>會議時間</label>
+          <input type="time" id="meeting-time">
+        </div>
+        <div class="field field-full">
+          <label>會議地點</label>
+          <input type="text" placeholder="例：工地現場 / 漣一設計辦公室">
+        </div>
+        <div class="field field-full">
+          <label>會議主題</label>
+          <input type="text" placeholder="例：水電進度檢討 + 廚房櫃體變更討論">
+        </div>
+        <div class="field field-full">
+          <label>出席人員（請列出姓名與身份）</label>
+          <textarea placeholder="例：&#10;業主 — 周小姐&#10;漣一設計 — 王設計師&#10;木工班 — 陳師傅&#10;水電班 — 李師傅"></textarea>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 會議議題 -->
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-title">會議議題</div>
+        <span class="section-title-en">DISCUSSION ITEMS</span>
+      </div>
+      <div class="view-switch">
+        <button class="active" onclick="switchView('type', this)">依類型</button>
+        <button onclick="switchView('space', this)">依空間</button>
+        <button onclick="switchView('time', this)">依時序</button>
+      </div>
+    </div>
+    <div class="section-body">
+      <div id="item-container"></div>
+      <button class="add-item-btn" onclick="openQuickAdd()">+ 新增議題</button>
+    </div>
+  </section>
+
+  <!-- 簽名 -->
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-title">確認簽名</div>
+        <span class="section-title-en">SIGNATURES</span>
+      </div>
+    </div>
+    <div class="section-body">
+      <p style="font-size:13px;color:var(--ink-soft);line-height:1.7;margin-bottom:16px">
+        會議結束後，請業主代表與漣一設計代表確認本次紀錄內容無誤後簽名。<br>
+        簽名後本紀錄即為正式會議文件。
+      </p>
+      <div class="sig-row">
+        <div>
+          <div class="field">
+            <label>業主代表</label>
+            <input type="text">
+          </div>
+          <div class="sig-canvas-wrap" style="margin-top:10px">
+            <canvas id="sig-owner"></canvas>
+            <div class="sig-placeholder" id="ph-owner">請於此處簽名</div>
+            <button class="sig-clear" onclick="clearSig('owner')">清除</button>
+          </div>
+          <div class="sig-meta">
+            <span>簽名日期</span><span id="sig-owner-date">—</span>
+          </div>
+        </div>
+        <div>
+          <div class="field">
+            <label>漣一設計代表</label>
+            <input type="text">
+          </div>
+          <div class="sig-canvas-wrap" style="margin-top:10px">
+            <canvas id="sig-designer"></canvas>
+            <div class="sig-placeholder" id="ph-designer">請於此處簽名</div>
+            <button class="sig-clear" onclick="clearSig('designer')">清除</button>
+          </div>
+          <div class="sig-meta">
+            <span>簽名日期</span><span id="sig-designer-date">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 公司資訊 -->
+  <section class="section">
+    <div class="section-body" style="text-align:center;padding:24px">
+      <div style="font-weight:700;letter-spacing:2px;margin-bottom:6px">漣一設計｜SITE MEETING MINUTES</div>
+      <div style="font-size:12px;color:var(--ink-soft);letter-spacing:1px">
+        本表單為工地會議正式紀錄文件
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- 新增 Modal -->
+<div class="modal-backdrop" id="quick-add-modal">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-title">新增議題</div>
+    <div class="modal-sub">先選類型與空間，再填細項</div>
+    
+    <div class="modal-step">
+      <div class="modal-step-label">① 議題類型</div>
+      <div class="chip-group" id="type-chips"></div>
+    </div>
+    
+    <div class="modal-step">
+      <div class="modal-step-label">② 相關空間</div>
+      <div class="chip-group" id="space-chips"></div>
+    </div>
+    
+    <div class="modal-step">
+      <div class="modal-step-label">③ 議題標題</div>
+      <input type="text" id="custom-item" placeholder="例：廚房櫃體高度改 85cm、玄關地磚樣式確認..." 
+             style="padding:10px;border:1px solid var(--line);border-radius:4px;width:100%;font-family:inherit;font-size:14px">
+    </div>
+    
+    <div class="modal-actions">
+      <button class="btn" onclick="closeQuickAdd()">取消</button>
+      <button class="btn btn-primary" onclick="confirmQuickAdd()">新增</button>
+    </div>
+  </div>
+</div>
+
+<div class="action-bar">
+  <div class="action-bar-inner">
+    <button class="btn" onclick="resetForm()">重新開始</button>
+    <button class="btn btn-primary" onclick="exportPDF()">匯出 PDF 報告</button>
+  </div>
+</div>
+
+<script>
+/* 議題類型 */
+const TYPES = [
+  { key: 'decision', label: '決議', desc: '當場拍板確認' },
+  { key: 'todo', label: '待辦', desc: '需後續處理' },
+  { key: 'change', label: '變更', desc: '原規劃調整' },
+  { key: 'question', label: '提問', desc: '業主疑問或需釐清' },
+];
+
+/* 空間（與驗收表單一致 + 其他自填） */
+const SPACES = ['玄關', '客廳', '餐廳', '廚房', '主臥', '次臥', '書房', '主衛', '客衛', '陽台', '儲藏室', '全室', '其他'];
+
+let items = [];
+let itemIdCounter = 0;
+let currentView = 'type';
+let quickAddState = { type: null, space: null };
+
+function init() {
+  const now = new Date();
+  document.getElementById('meeting-date').value = now.toISOString().split('T')[0];
+  document.getElementById('meeting-time').value = now.toTimeString().slice(0, 5);
+  
+  initSignature('sig-owner', 'ph-owner', 'owner');
+  initSignature('sig-designer', 'ph-designer', 'designer');
+  
+  renderTypeChips();
+  renderSpaceChips();
+  render();
+  updateStats();
+}
+
+function renderTypeChips() {
+  document.getElementById('type-chips').innerHTML = TYPES.map(t => 
+    `<span class="chip type-chip ${t.key}" onclick="selectModalChip('type', '${t.key}', this)">${t.label}</span>`
+  ).join('');
+}
+
+function renderSpaceChips() {
+  document.getElementById('space-chips').innerHTML = SPACES.map(s => 
+    `<span class="chip" onclick="selectModalChip('space', '${s}', this)">${s}</span>`
+  ).join('');
+}
+
+function openQuickAdd() {
+  quickAddState = { type: null, space: null };
+  document.querySelectorAll('#type-chips .chip, #space-chips .chip').forEach(c => {
+    c.classList.remove('active', 'decision', 'todo', 'change', 'question');
+    if (c.dataset.custom === 'true') {
+      c.textContent = '其他';
+      delete c.dataset.custom;
+    }
+  });
+  // 還原 type chip 的 class
+  document.querySelectorAll('#type-chips .chip').forEach(c => {
+    const key = c.classList.contains('type-chip') ? null : null;
+    // 重新加上 type class
+    TYPES.forEach(t => {
+      if (c.textContent === t.label) c.classList.add(t.key);
+    });
+  });
+  document.getElementById('custom-item').value = '';
+  document.getElementById('quick-add-modal').classList.add('active');
+}
+
+function closeQuickAdd() {
+  document.getElementById('quick-add-modal').classList.remove('active');
+}
+
+function selectModalChip(type, value, el) {
+  // 處理空間「其他」自填
+  if (type === 'space' && value === '其他') {
+    const customSpace = prompt('請輸入空間名稱（例：辦公區、店面前台、會議室...）');
+    if (!customSpace || !customSpace.trim()) return;
+    value = customSpace.trim();
+    el.textContent = value;
+    el.dataset.custom = 'true';
+  } else if (type === 'space' && el.dataset.custom === 'true' && el.classList.contains('active')) {
+    el.textContent = '其他';
+    delete el.dataset.custom;
+  }
+  
+  quickAddState[type] = value;
+  const parent = el.parentNode;
+  parent.querySelectorAll('.chip').forEach(c => {
+    c.classList.remove('active');
+    if (c !== el && c.dataset.custom === 'true') {
+      c.textContent = '其他';
+      delete c.dataset.custom;
+    }
+  });
+  el.classList.add('active');
+}
+
+function confirmQuickAdd() {
+  const { type, space } = quickAddState;
+  const title = document.getElementById('custom-item').value.trim();
+  
+  if (!type) { alert('請先選擇議題類型'); return; }
+  if (!space) { alert('請先選擇相關空間'); return; }
+  if (!title) { alert('請輸入議題標題'); return; }
+  
+  addItem({ type, space, title });
+  closeQuickAdd();
+}
+
+function addItem(data = {}) {
+  const id = ++itemIdCounter;
+  items.push({
+    id,
+    type: data.type || 'todo',
+    space: data.space || '客廳',
+    title: data.title || '',
+    desc: '',
+    owner: '',
+    deadline: '',
+    photos: [],
+    createdAt: Date.now()
+  });
+  render();
+  updateStats();
+}
+
+function render() {
+  const container = document.getElementById('item-container');
+  
+  if (items.length === 0) {
+    container.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--ink-soft);font-size:13px">尚無議題，請點下方「+ 新增議題」</div>';
+    return;
+  }
+  
+  if (currentView === 'time') {
+    container.innerHTML = '<div style="display:flex;flex-direction:column;gap:12px" id="time-list"></div>';
+    const list = document.getElementById('time-list');
+    [...items].sort((a, b) => a.createdAt - b.createdAt).forEach((d, idx) => {
+      list.appendChild(buildItemCard(d, idx + 1));
+    });
+  } else {
+    const groupBy = currentView;
+    const groups = {};
+    items.forEach(d => {
+      const key = d[groupBy] || '未分類';
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(d);
+    });
+    
+    let order, getLabel;
+    if (currentView === 'type') {
+      order = TYPES.map(t => t.key);
+      getLabel = key => TYPES.find(t => t.key === key)?.label || key;
+    } else {
+      order = SPACES;
+      getLabel = key => key;
+    }
+    
+    const sortedKeys = order.filter(k => groups[k]).concat(
+      Object.keys(groups).filter(k => !order.includes(k))
+    );
+    
+    container.innerHTML = '';
+    let runningNum = 0;
+    sortedKeys.forEach(key => {
+      const group = document.createElement('div');
+      group.className = 'item-group';
+      const headerClass = currentView === 'type' ? key : 'space';
+      group.innerHTML = `
+        <div class="item-group-header ${headerClass}">
+          <div class="item-group-title">${getLabel(key)}</div>
+          <div class="item-group-count">${groups[key].length} 筆</div>
+        </div>
+        <div class="item-group-body" id="group-${key}"></div>
+      `;
+      container.appendChild(group);
+      const body = document.getElementById(`group-${key}`);
+      groups[key].forEach(d => {
+        runningNum++;
+        body.appendChild(buildItemCard(d, runningNum));
+      });
+    });
+  }
+}
+
+function buildItemCard(item, displayNum) {
+  const card = document.createElement('div');
+  card.className = 'item-card';
+  card.dataset.id = item.id;
+  
+  const typeLabel = TYPES.find(t => t.key === item.type)?.label || item.type;
+  const typeOptions = TYPES.map(t => 
+    `<option value="${t.key}" ${t.key === item.type ? 'selected' : ''}>${t.label}</option>`
+  ).join('');
+  const spaceOptions = SPACES.map(s => 
+    `<option value="${s}" ${s === item.space ? 'selected' : ''}>${s}</option>`
+  ).join('');
+  
+  card.innerHTML = `
+    <div class="item-head">
+      <div class="item-num">${String(displayNum).padStart(2, '0')}</div>
+      <span class="item-type-tag ${item.type}">${typeLabel}</span>
+      <span class="item-space-tag">${item.space}</span>
+      <input class="item-title-input" type="text" 
+             placeholder="議題標題" 
+             value="${item.title}"
+             onchange="updateItem(${item.id}, 'title', this.value)">
+      <button class="item-delete" onclick="removeItem(${item.id})">×</button>
+    </div>
+    <div class="item-body">
+      <div class="item-row">
+        <div class="field">
+          <label>議題類型</label>
+          <div class="select-wrap">
+            <select onchange="updateItem(${item.id}, 'type', this.value); render(); updateStats()">${typeOptions}</select>
+          </div>
+        </div>
+        <div class="field">
+          <label>相關空間</label>
+          <div class="select-wrap">
+            <select onchange="updateItem(${item.id}, 'space', this.value); render()">${spaceOptions}</select>
+          </div>
+        </div>
+        <div class="field field-full">
+          <label>詳細內容／結論（可口述語音輸入）</label>
+          <textarea placeholder="按 iPad 鍵盤上的麥克風圖示，直接語音輸入文字..." 
+                    onchange="updateItem(${item.id}, 'desc', this.value)">${item.desc}</textarea>
+        </div>
+      </div>
+      
+      <div class="item-row">
+        <div class="field">
+          <label>負責人</label>
+          <input type="text" placeholder="例：木工陳師傅 / 業主"
+                 value="${item.owner || ''}"
+                 onchange="updateItem(${item.id}, 'owner', this.value)">
+        </div>
+        <div class="field">
+          <label>預計完成日</label>
+          <input type="date" value="${item.deadline || ''}"
+                 onchange="updateItem(${item.id}, 'deadline', this.value)">
+        </div>
+      </div>
+      
+      <div class="photo-area">
+        <div class="photo-label">相關照片（點擊上傳/拍照）</div>
+        <div class="photo-grid" id="photos-${item.id}">
+          ${renderPhotoSlots(item.id, 4, item.photos)}
+        </div>
+      </div>
+    </div>
+  `;
+  
+  return card;
+}
+
+function renderPhotoSlots(itemId, count, existingPhotos = []) {
+  return Array.from({length: count}, (_, i) => {
+    const hasPhoto = existingPhotos[i];
+    return `
+      <label class="photo-slot ${hasPhoto ? 'has-photo' : ''}" data-slot="${i}">
+        ${hasPhoto ? `<img src="${hasPhoto}">` : '<span class="plus">+</span>'}
+        <input type="file" accept="image/*" capture="environment" 
+               onchange="handlePhotoUpload(event, ${itemId}, ${i})">
+        <button type="button" class="remove-photo" onclick="event.preventDefault(); removePhoto(${itemId}, ${i})">×</button>
+      </label>
+    `;
+  }).join('');
+}
+
+function handlePhotoUpload(event, itemId, slotIndex) {
+  const file = event.target.files[0];
+  if (!file) return;
+  
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const slot = document.querySelector(`#photos-${itemId} [data-slot="${slotIndex}"]`);
+    const oldImg = slot.querySelector('img');
+    if (oldImg) oldImg.remove();
+    
+    const img = document.createElement('img');
+    img.src = e.target.result;
+    slot.insertBefore(img, slot.firstChild);
+    slot.classList.add('has-photo');
+    
+    const item = items.find(d => d.id === itemId);
+    if (item) item.photos[slotIndex] = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function removePhoto(itemId, slotIndex) {
+  const slot = document.querySelector(`#photos-${itemId} [data-slot="${slotIndex}"]`);
+  const img = slot.querySelector('img');
+  if (img) img.remove();
+  slot.classList.remove('has-photo');
+  const input = slot.querySelector('input[type="file"]');
+  if (input) input.value = '';
+  
+  const item = items.find(d => d.id === itemId);
+  if (item) item.photos[slotIndex] = null;
+}
+
+function updateItem(id, field, value) {
+  const item = items.find(d => d.id === id);
+  if (item) item[field] = value;
+}
+
+function removeItem(id) {
+  if (!confirm('確定刪除此筆議題？')) return;
+  items = items.filter(d => d.id !== id);
+  render();
+  updateStats();
+}
+
+function updateStats() {
+  document.getElementById('stat-total').textContent = items.length;
+  
+  const grid = document.getElementById('type-stats-grid');
+  if (items.length === 0) {
+    grid.innerHTML = '<div class="type-stats-empty">尚無議題</div>';
+    return;
+  }
+  
+  const counts = {};
+  items.forEach(d => {
+    counts[d.type] = (counts[d.type] || 0) + 1;
+  });
+  
+  grid.innerHTML = TYPES.filter(t => counts[t.key]).map(t => 
+    `<span class="type-stat-pill ${t.key}">${t.label}<b>${counts[t.key]}</b></span>`
+  ).join('');
+}
+
+function switchView(view, el) {
+  currentView = view;
+  document.querySelectorAll('.view-switch button').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  render();
+}
+
+function initSignature(canvasId, placeholderId, key) {
+  const canvas = document.getElementById(canvasId);
+  const placeholder = document.getElementById(placeholderId);
+  const ctx = canvas.getContext('2d');
+  
+  function resize() {
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    ctx.scale(dpr, dpr);
+    ctx.strokeStyle = '#1C1C1C';
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  
+  let drawing = false, lastX = 0, lastY = 0;
+  
+  function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const point = e.touches ? e.touches[0] : e;
+    return { x: point.clientX - rect.left, y: point.clientY - rect.top };
+  }
+  
+  function start(e) {
+    e.preventDefault();
+    drawing = true;
+    const pos = getPos(e);
+    lastX = pos.x; lastY = pos.y;
+    placeholder.style.display = 'none';
+    document.getElementById('sig-' + key + '-date').textContent = new Date().toLocaleDateString('zh-TW');
+  }
+  
+  function draw(e) {
+    if (!drawing) return;
+    e.preventDefault();
+    const pos = getPos(e);
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(pos.x, pos.y);
+    ctx.stroke();
+    lastX = pos.x; lastY = pos.y;
+  }
+  
+  function stop() { drawing = false; }
+  
+  canvas.addEventListener('mousedown', start);
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mouseup', stop);
+  canvas.addEventListener('mouseleave', stop);
+  canvas.addEventListener('touchstart', start);
+  canvas.addEventListener('touchmove', draw);
+  canvas.addEventListener('touchend', stop);
+}
+
+function clearSig(key) {
+  const canvas = document.getElementById('sig-' + key);
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  document.getElementById('ph-' + key).style.display = 'flex';
+  document.getElementById('sig-' + key + '-date').textContent = '—';
+}
+
+function exportPDF() { window.print(); }
+
+function resetForm() {
+  if (!confirm('將清空所有議題與簽名，確定？')) return;
+  items = [];
+  itemIdCounter = 0;
+  render();
+  clearSig('owner');
+  clearSig('designer');
+  updateStats();
+}
+
+init();
+</script>
+
+</body>
+</html>

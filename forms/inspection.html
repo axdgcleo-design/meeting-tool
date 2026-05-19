@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>漣一設計 初驗表單</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  
+  :root {
+    --bg: #F5F1EA;
+    --paper: #FFFFFF;
+    --ink: #1C1C1C;
+    --ink-soft: #5A5A5A;
+    --line: #D9D2C5;
+    --accent: #3A2E1F;
+    --space-bg: #EDE5D3;
+  }
+  
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  .header {
+    background: var(--paper);
+    border-bottom: 1px solid var(--line);
+    padding: 18px 20px;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .header-inner { display: flex; align-items: center; gap: 14px; max-width: 900px; margin: 0 auto; }
+  .logo {
+    width: 44px; height: 44px;
+    border: 1.5px solid var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; line-height: 1.1;
+    letter-spacing: 1px;
+  }
+  .header-title { font-size: 16px; font-weight: 700; letter-spacing: 0.5px; }
+  .header-sub { font-size: 11px; color: var(--ink-soft); letter-spacing: 2px; margin-top: 2px; }
+  
+  .back-link {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--ink-soft);
+    text-decoration: none;
+    padding: 6px 10px;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+  }
+  .back-link:hover { color: var(--ink); border-color: var(--ink); }
+  
+  .container { max-width: 900px; margin: 0 auto; padding: 20px 16px 120px; }
+  
+  .section {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+  
+  .section-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: space-between;
+    background: linear-gradient(180deg, #FAF7F1, var(--paper));
+    gap: 12px;
+  }
+  .section-title { font-size: 14px; font-weight: 700; letter-spacing: 1.5px; }
+  .section-title-en {
+    display: block; font-size: 9px; color: var(--ink-soft);
+    letter-spacing: 2px; margin-top: 2px; font-weight: 400;
+  }
+  
+  .section-body { padding: 20px; }
+  
+  /* Form Fields */
+  .field-group { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 20px; }
+  .field-full { grid-column: 1 / -1; }
+  .field { display: flex; flex-direction: column; }
+  .field label {
+    font-size: 11px; color: var(--ink-soft);
+    letter-spacing: 1px; margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+  .field input, .field textarea, .field select {
+    border: none;
+    border-bottom: 1px solid var(--line);
+    background: transparent;
+    padding: 6px 0;
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--ink);
+    outline: none;
+    border-radius: 0;
+    -webkit-appearance: none;
+  }
+  .field input:focus, .field textarea:focus, .field select:focus {
+    border-bottom-color: var(--ink);
+  }
+  .field textarea { min-height: 60px; resize: vertical; }
+  
+  /* View Switcher */
+  .view-switch {
+    display: flex; gap: 0;
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    overflow: hidden;
+    background: var(--paper);
+  }
+  .view-switch button {
+    border: none; background: transparent;
+    padding: 7px 14px;
+    font-size: 12px; font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    color: var(--ink-soft);
+    letter-spacing: 0.5px;
+  }
+  .view-switch button.active {
+    background: var(--ink); color: var(--paper);
+  }
+  
+  /* Space Statistics (替代原本的 stats) */
+  .space-stats {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    margin-bottom: 16px;
+    padding: 16px 18px;
+  }
+  .space-stats-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .space-stats-title {
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--ink);
+  }
+  .space-stats-total {
+    font-size: 11px; color: var(--ink-soft);
+    letter-spacing: 1px;
+  }
+  .space-stats-total b {
+    color: var(--ink);
+    font-size: 14px;
+    margin: 0 2px;
+  }
+  .space-stats-grid {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .space-stat-pill {
+    background: var(--space-bg);
+    border-radius: 14px;
+    padding: 5px 12px;
+    font-size: 12px;
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--ink);
+  }
+  .space-stat-pill b {
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 9px;
+    min-width: 18px;
+    height: 18px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 10px;
+    padding: 0 5px;
+  }
+  .space-stats-empty {
+    color: var(--ink-soft);
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+  
+  /* Space Group */
+  .space-group {
+    margin-bottom: 18px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--paper);
+  }
+  .space-group-header {
+    background: var(--space-bg);
+    padding: 12px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--line);
+  }
+  .space-group-title {
+    font-size: 13px; font-weight: 700;
+    letter-spacing: 2px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .space-group-title::before {
+    content: '';
+    width: 4px; height: 16px;
+    background: var(--ink);
+    display: inline-block;
+  }
+  .space-group-count {
+    font-size: 11px; color: var(--ink-soft);
+    letter-spacing: 1px;
+  }
+  .space-group-body {
+    padding: 14px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  
+  /* Defect Cards */
+  .defect-card {
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--paper);
+  }
+  .defect-card:focus-within { border-color: var(--ink); }
+  
+  .defect-head {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 14px;
+    background: #FAF7F1;
+    border-bottom: 1px solid var(--line);
+    flex-wrap: wrap;
+  }
+  .defect-num {
+    width: 26px; height: 26px;
+    background: var(--ink); color: var(--paper);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .defect-space-tag, .defect-trade-tag {
+    font-size: 11px; font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 10px;
+    letter-spacing: 0.5px;
+  }
+  .defect-space-tag {
+    background: var(--space-bg);
+    color: var(--accent);
+  }
+  .defect-trade-tag {
+    background: #E0D5BE;
+    color: var(--accent);
+  }
+  .defect-title-input {
+    flex: 1; min-width: 140px;
+    border: none; background: transparent;
+    font-size: 14px; font-weight: 600;
+    font-family: inherit;
+    outline: none;
+    padding: 4px 0;
+  }
+  .defect-delete {
+    background: none; border: none;
+    color: var(--ink-soft);
+    font-size: 18px; cursor: pointer;
+    padding: 4px 8px; line-height: 1;
+  }
+  .defect-delete:hover { color: #B8551E; }
+  
+  .defect-body { padding: 14px; }
+  
+  .defect-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 14px;
+    margin-bottom: 12px;
+  }
+  .defect-row .field-full { grid-column: 1 / -1; }
+  
+  /* Custom select */
+  .select-wrap {
+    position: relative;
+    border-bottom: 1px solid var(--line);
+  }
+  .select-wrap select {
+    width: 100%;
+    appearance: none;
+    -webkit-appearance: none;
+    border: none;
+    background: transparent;
+    padding: 6px 24px 6px 0;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--ink);
+    outline: none;
+    cursor: pointer;
+  }
+  .select-wrap::after {
+    content: '▾';
+    position: absolute;
+    right: 4px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--ink-soft);
+    pointer-events: none;
+    font-size: 11px;
+  }
+  
+  /* Photo */
+  .photo-area { margin-top: 10px; }
+  .photo-label {
+    font-size: 11px; color: var(--ink-soft);
+    letter-spacing: 1px; margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 6px;
+  }
+  .photo-slot {
+    aspect-ratio: 1;
+    border: 1.5px dashed var(--line);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--ink-soft);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    background: #FAF7F1;
+  }
+  .photo-slot:hover { border-color: var(--ink); }
+  .photo-slot input[type="file"] {
+    position: absolute; inset: 0;
+    opacity: 0; cursor: pointer;
+  }
+  .photo-slot .plus { font-size: 22px; font-weight: 300; }
+  .photo-slot img { width: 100%; height: 100%; object-fit: cover; }
+  .photo-slot .remove-photo {
+    position: absolute; top: 3px; right: 3px;
+    background: rgba(0,0,0,0.65); color: white;
+    border: none; width: 20px; height: 20px;
+    border-radius: 50%; cursor: pointer;
+    font-size: 13px; line-height: 1;
+    display: none;
+  }
+  .photo-slot.has-photo .remove-photo { display: block; }
+  .photo-slot.has-photo .plus { display: none; }
+  
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border: 1px solid var(--ink);
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 13px; font-weight: 600;
+    font-family: inherit;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s;
+  }
+  .btn:hover { background: var(--ink); color: var(--paper); }
+  .btn-primary { background: var(--ink); color: var(--paper); }
+  .btn-primary:hover { background: var(--accent); border-color: var(--accent); }
+  
+  /* Signature */
+  .sig-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .sig-canvas-wrap {
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: var(--paper);
+    height: 140px;
+    position: relative;
+    overflow: hidden;
+  }
+  .sig-canvas-wrap canvas { width: 100%; height: 100%; touch-action: none; display: block; }
+  .sig-placeholder {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--line); font-size: 13px;
+    pointer-events: none;
+  }
+  .sig-clear {
+    position: absolute; top: 6px; right: 8px;
+    background: transparent; border: none;
+    color: var(--ink-soft); font-size: 11px;
+    cursor: pointer; padding: 4px 8px;
+  }
+  .sig-meta {
+    margin-top: 8px;
+    font-size: 11px; color: var(--ink-soft);
+    letter-spacing: 1px;
+    display: flex; justify-content: space-between;
+  }
+  
+  /* Action Bar */
+  .action-bar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: var(--paper);
+    border-top: 1px solid var(--line);
+    padding: 12px 16px;
+    z-index: 50;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.04);
+  }
+  .action-bar-inner {
+    max-width: 900px; margin: 0 auto;
+    display: flex; gap: 10px; width: 100%;
+  }
+  .action-bar .btn { flex: 1; }
+  
+  /* Add Defect Button */
+  .add-defect-btn {
+    width: 100%;
+    padding: 14px;
+    border: 1.5px dashed var(--line);
+    background: transparent;
+    color: var(--ink-soft);
+    font-size: 13px; font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: 14px;
+    font-family: inherit;
+  }
+  .add-defect-btn:hover { border-color: var(--ink); color: var(--ink); }
+  
+  /* Quick Add Modal */
+  .modal-backdrop {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    z-index: 200;
+  }
+  .modal-backdrop.active { display: flex; }
+  .modal {
+    background: var(--paper);
+    border-radius: 12px 12px 0 0;
+    width: 100%;
+    max-width: 900px;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 20px;
+    animation: slideUp 0.25s ease-out;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .modal-title {
+    font-size: 16px; font-weight: 700;
+    letter-spacing: 1px; margin-bottom: 4px;
+  }
+  .modal-sub {
+    font-size: 12px; color: var(--ink-soft);
+    margin-bottom: 18px;
+  }
+  .modal-step { margin-bottom: 18px; }
+  .modal-step-label {
+    font-size: 11px; color: var(--ink-soft);
+    letter-spacing: 1.5px; margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+  .chip-group { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    background: var(--paper);
+    font-size: 13px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .chip.active {
+    background: var(--ink); color: var(--paper);
+    border-color: var(--ink);
+  }
+  .modal-actions {
+    display: flex; gap: 10px;
+    position: sticky; bottom: 0;
+    background: var(--paper);
+    padding-top: 16px;
+    margin-top: 8px;
+    border-top: 1px solid var(--line);
+  }
+  .modal-actions .btn { flex: 1; }
+  
+  /* Print */
+  @media print {
+    @page { margin: 12mm; size: A4; }
+    body { background: white; font-size: 11pt; }
+    .header { position: static; }
+    .action-bar, .add-defect-btn, .defect-delete, .sig-clear,
+    .photo-slot .remove-photo, .view-switch, .modal-backdrop,
+    .back-link { display: none !important; }
+    .photo-slot:not(.has-photo) { display: none; }
+    .section, .defect-card, .space-group { break-inside: avoid; border: 1px solid #999; }
+    .container { padding: 0; max-width: 100%; }
+    input, textarea, select {
+      border-bottom: 1px solid #ccc !important;
+      background: white !important;
+    }
+    .space-group-header,
+    .defect-space-tag,
+    .defect-trade-tag,
+    .space-stat-pill,
+    .space-stat-pill b {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .field-group { grid-template-columns: 1fr; }
+    .defect-row { grid-template-columns: 1fr; }
+    .sig-row { grid-template-columns: 1fr; }
+    .container { padding: 14px 12px 110px; }
+    .section-body { padding: 16px; }
+    .section-header { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">漣一<br>設計</div>
+    <div>
+      <div class="header-title">初驗表單</div>
+      <div class="header-sub">INSPECTION FORM</div>
+    </div>
+    <a href="../index.html" class="back-link">← 首頁</a>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- 空間統計 -->
+  <div class="space-stats">
+    <div class="space-stats-header">
+      <div class="space-stats-title">空間統計</div>
+      <div class="space-stats-total">共 <b id="stat-total">0</b> 筆</div>
+    </div>
+    <div class="space-stats-grid" id="space-stats-grid">
+      <div class="space-stats-empty">尚無紀錄</div>
+    </div>
+  </div>
+
+  <!-- 基本資訊 -->
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-title">基本資訊</div>
+        <span class="section-title-en">PROJECT INFO</span>
+      </div>
+    </div>
+    <div class="section-body">
+      <div class="field-group">
+        <div class="field field-full">
+          <label>案名</label>
+          <input type="text" placeholder="例：台中國泰 THE PARK 住宅裝修工程案">
+        </div>
+        <div class="field">
+          <label>客戶姓名</label>
+          <input type="text" placeholder="例：周小姐">
+        </div>
+        <div class="field">
+          <label>聯絡電話</label>
+          <input type="tel" placeholder="例：0988-888888">
+        </div>
+        <div class="field field-full">
+          <label>案場地址</label>
+          <input type="text" placeholder="例：國泰 THE PARK">
+        </div>
+        <div class="field">
+          <label>漣一設計驗收人員</label>
+          <input type="text">
+        </div>
+        <div class="field">
+          <label>客戶驗收代表</label>
+          <input type="text">
+        </div>
+        <div class="field">
+          <label>驗收日期</label>
+          <input type="date" id="inspection-date">
+        </div>
+        <div class="field">
+          <label>驗收階段</label>
+          <select>
+            <option>初驗</option>
+            <option>複驗</option>
+            <option>完工驗收</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 驗收紀錄 -->
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-title">驗收紀錄</div>
+        <span class="section-title-en">INSPECTION LOG</span>
+      </div>
+      <div class="view-switch">
+        <button class="active" onclick="switchView('space', this)">依空間</button>
+        <button onclick="switchView('trade', this)">依工種</button>
+        <button onclick="switchView('time', this)">依時序</button>
+      </div>
+    </div>
+    <div class="section-body">
+      <div id="defect-container"></div>
+      <button class="add-defect-btn" onclick="openQuickAdd()">+ 新增紀錄</button>
+    </div>
+  </section>
+
+  <!-- 簽名 -->
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <div class="section-title">電子簽名</div>
+        <span class="section-title-en">SIGNATURES</span>
+      </div>
+    </div>
+    <div class="section-body">
+      <p style="font-size:13px;color:var(--ink-soft);line-height:1.7;margin-bottom:16px">
+        驗收完成後，請業主代表與漣一設計驗收人員分別於下方簽名確認。<br>
+        簽名後本表單即為正式驗收記錄。
+      </p>
+      <div class="sig-row">
+        <div>
+          <div class="field">
+            <label>業主驗收代表</label>
+            <input type="text">
+          </div>
+          <div class="sig-canvas-wrap" style="margin-top:10px">
+            <canvas id="sig-owner"></canvas>
+            <div class="sig-placeholder" id="ph-owner">請於此處簽名</div>
+            <button class="sig-clear" onclick="clearSig('owner')">清除</button>
+          </div>
+          <div class="sig-meta">
+            <span>簽名日期</span><span id="sig-owner-date">—</span>
+          </div>
+        </div>
+        <div>
+          <div class="field">
+            <label>漣一設計驗收人員</label>
+            <input type="text">
+          </div>
+          <div class="sig-canvas-wrap" style="margin-top:10px">
+            <canvas id="sig-designer"></canvas>
+            <div class="sig-placeholder" id="ph-designer">請於此處簽名</div>
+            <button class="sig-clear" onclick="clearSig('designer')">清除</button>
+          </div>
+          <div class="sig-meta">
+            <span>簽名日期</span><span id="sig-designer-date">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 公司資訊 -->
+  <section class="section">
+    <div class="section-body" style="text-align:center;padding:24px">
+      <div style="font-weight:700;letter-spacing:2px;margin-bottom:6px">漣一設計｜INSPECTION SYSTEM</div>
+      <div style="font-size:12px;color:var(--ink-soft);letter-spacing:1px">
+        本表單為驗收正式紀錄文件
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- 新增 Modal -->
+<div class="modal-backdrop" id="quick-add-modal">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-title">新增驗收紀錄</div>
+    <div class="modal-sub">先選空間與工種，再填細項</div>
+    
+    <div class="modal-step">
+      <div class="modal-step-label">① 空間</div>
+      <div class="chip-group" id="space-chips"></div>
+    </div>
+    
+    <div class="modal-step">
+      <div class="modal-step-label">② 工種</div>
+      <div class="chip-group" id="trade-chips"></div>
+    </div>
+    
+    <div class="modal-step">
+      <div class="modal-step-label">③ 紀錄項目（可直接點或自行輸入）</div>
+      <div class="chip-group" id="item-chips"></div>
+      <input type="text" id="custom-item" placeholder="或直接輸入自訂內容..." 
+             style="margin-top:10px;padding:10px;border:1px solid var(--line);border-radius:4px;width:100%;font-family:inherit;font-size:14px">
+    </div>
+    
+    <div class="modal-actions">
+      <button class="btn" onclick="closeQuickAdd()">取消</button>
+      <button class="btn btn-primary" onclick="confirmQuickAdd()">新增此筆</button>
+    </div>
+  </div>
+</div>
+
+<div class="action-bar">
+  <div class="action-bar-inner">
+    <button class="btn" onclick="resetForm()">重新開始</button>
+    <button class="btn btn-primary" onclick="exportPDF()">匯出 PDF 報告</button>
+  </div>
+</div>
+
+<script>
+/* 資料定義 */
+const SPACES = ['玄關', '客廳', '餐廳', '廚房', '主臥', '次臥', '書房', '主衛', '客衛', '陽台', '儲藏室', '全室', '其他'];
+
+const TRADES = ['油漆', '木作', '木地板', '泥作', '水電', '燈具', '空調', '五金', '玻璃', '窗簾', '清潔', '其他'];
+
+const TRADE_ITEMS = {
+  '油漆': ['牆面有刷痕/流痕', '色差不均', '表面顆粒髒污', '邊角未收俐', '與天花交接處不直', '局部脫漆', '補土痕跡明顯'],
+  '木作': ['櫃體門片不對齊', '門片開合卡卡', '櫃內未上漆/封邊', '抽屜滑軌不順', '層板下垂', '收邊條鬆脫', '貼皮起翹', '尺寸與圖不符'],
+  '木地板': ['地板不平', '表面刮傷', '伸縮縫過大', '踢腳板未密合', '異音/踩踏聲', '收邊矽利康不平整'],
+  '泥作': ['磁磚空心', '磁磚對縫不齊', '填縫劑掉色/不均', '地排洩水坡度不足', '門檻高低差', '矽利康收邊粗糙'],
+  '水電': ['插座位置偏移', '插座無電', '插座面板鬆動', '弱電出線口未收尾', '排水異音', '冷熱水管錯接', '水壓不足'],
+  '燈具': ['燈具未居中', '色溫不一', '燈具迴路錯誤', '崁燈孔徑過大', '燈具搖晃不穩', '調光不順'],
+  '空調': ['出風口縫隙過大', '排水管未接妥/滴水', '冷媒管未包覆', '室內機未水平', '面板間距不均'],
+  '五金': ['把手鬆動', '鉸鍊歪斜', '門檔位置不對', '門鎖卡卡', '緩衝功能失效'],
+  '玻璃': ['玻璃刮傷', '矽利康收邊不平整', '鏡面安裝歪斜', '玻璃膠殘留'],
+  '窗簾': ['窗簾盒未藏線', '軌道安裝歪斜', '高度不足/過低', '左右拉動卡卡'],
+  '清潔': ['地面汙漬未清', '窗框灰塵', '玻璃指印/水痕', '櫃內未清潔'],
+  '其他': ['']
+};
+
+let defects = [];
+let defectIdCounter = 0;
+let currentView = 'space';
+let quickAddState = { space: null, trade: null, item: null };
+
+function init() {
+  const today = new Date();
+  document.getElementById('inspection-date').value = today.toISOString().split('T')[0];
+  
+  initSignature('sig-owner', 'ph-owner', 'owner');
+  initSignature('sig-designer', 'ph-designer', 'designer');
+  
+  renderSpaceChips();
+  renderTradeChips();
+  render();
+  updateStats();
+}
+
+function renderSpaceChips() {
+  document.getElementById('space-chips').innerHTML = SPACES.map(s => 
+    `<span class="chip" onclick="selectModalChip('space', '${s}', this)">${s}</span>`
+  ).join('');
+}
+
+function renderTradeChips() {
+  document.getElementById('trade-chips').innerHTML = TRADES.map(t => 
+    `<span class="chip" onclick="selectModalChip('trade', '${t}', this)">${t}</span>`
+  ).join('');
+}
+
+function renderItemChips(trade) {
+  const items = TRADE_ITEMS[trade] || [''];
+  document.getElementById('item-chips').innerHTML = items.filter(i => i).map(i => 
+    `<span class="chip" onclick="selectModalChip('item', '${i.replace(/'/g, "\\'")}', this)">${i}</span>`
+  ).join('');
+}
+
+function openQuickAdd() {
+  quickAddState = { space: null, trade: null, item: null };
+  document.querySelectorAll('#space-chips .chip, #trade-chips .chip').forEach(c => c.classList.remove('active'));
+  document.getElementById('item-chips').innerHTML = '<span style="color:var(--ink-soft);font-size:12px">請先選擇工種</span>';
+  document.getElementById('custom-item').value = '';
+  document.getElementById('quick-add-modal').classList.add('active');
+}
+
+function closeQuickAdd() {
+  document.getElementById('quick-add-modal').classList.remove('active');
+}
+
+function selectModalChip(type, value, el) {
+  // 處理空間「其他」自填
+  if (type === 'space' && value === '其他') {
+    const customSpace = prompt('請輸入空間名稱（例：辦公區、店面前台、會議室、員工休息區...）');
+    if (!customSpace || !customSpace.trim()) return;
+    value = customSpace.trim();
+    // 把「其他」chip 的文字改為自填內容（暫時顯示用）
+    el.textContent = value;
+    el.dataset.custom = 'true';
+  } else if (type === 'space' && el.dataset.custom === 'true') {
+    // 重新點擊其他被改過名字的 chip，還原成「其他」
+    el.textContent = '其他';
+    delete el.dataset.custom;
+  }
+  
+  quickAddState[type] = value;
+  const parent = el.parentNode;
+  parent.querySelectorAll('.chip').forEach(c => {
+    c.classList.remove('active');
+    // 還原其他被改過的「其他」chip
+    if (c !== el && c.dataset.custom === 'true') {
+      c.textContent = '其他';
+      delete c.dataset.custom;
+    }
+  });
+  el.classList.add('active');
+  if (type === 'trade') {
+    quickAddState.item = null;
+    renderItemChips(value);
+  }
+}
+
+function confirmQuickAdd() {
+  const { space, trade, item } = quickAddState;
+  const customItem = document.getElementById('custom-item').value.trim();
+  const finalItem = customItem || item;
+  
+  if (!space) { alert('請先選擇空間'); return; }
+  if (!trade) { alert('請先選擇工種'); return; }
+  if (!finalItem) { alert('請選擇或輸入紀錄項目'); return; }
+  
+  addDefect({
+    space, trade,
+    title: finalItem,
+    location: '',
+    desc: ''
+  });
+  closeQuickAdd();
+}
+
+function addDefect(data = {}) {
+  const id = ++defectIdCounter;
+  defects.push({
+    id,
+    space: data.space || '客廳',
+    trade: data.trade || '其他',
+    title: data.title || '',
+    location: data.location || '',
+    desc: data.desc || '',
+    photos: [],
+    createdAt: Date.now()
+  });
+  render();
+  updateStats();
+}
+
+function render() {
+  const container = document.getElementById('defect-container');
+  
+  if (defects.length === 0) {
+    container.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--ink-soft);font-size:13px">尚無紀錄，請點下方「+ 新增紀錄」</div>';
+    return;
+  }
+  
+  if (currentView === 'time') {
+    container.innerHTML = '<div style="display:flex;flex-direction:column;gap:12px" id="time-list"></div>';
+    const list = document.getElementById('time-list');
+    [...defects].sort((a, b) => a.createdAt - b.createdAt).forEach((d, idx) => {
+      list.appendChild(buildDefectCard(d, idx + 1));
+    });
+  } else {
+    const groupBy = currentView === 'space' ? 'space' : 'trade';
+    const groups = {};
+    defects.forEach(d => {
+      const key = d[groupBy] || '未分類';
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(d);
+    });
+    
+    const order = currentView === 'space' ? SPACES : TRADES;
+    const sortedKeys = order.filter(k => groups[k]).concat(
+      Object.keys(groups).filter(k => !order.includes(k))
+    );
+    
+    container.innerHTML = '';
+    let runningNum = 0;
+    sortedKeys.forEach(key => {
+      const group = document.createElement('div');
+      group.className = 'space-group';
+      group.innerHTML = `
+        <div class="space-group-header">
+          <div class="space-group-title">${key}</div>
+          <div class="space-group-count">${groups[key].length} 筆</div>
+        </div>
+        <div class="space-group-body" id="group-${key}"></div>
+      `;
+      container.appendChild(group);
+      const body = document.getElementById(`group-${key}`);
+      groups[key].forEach(d => {
+        runningNum++;
+        body.appendChild(buildDefectCard(d, runningNum));
+      });
+    });
+  }
+}
+
+function buildDefectCard(defect, displayNum) {
+  const card = document.createElement('div');
+  card.className = 'defect-card';
+  card.dataset.id = defect.id;
+  
+  const spaceOptions = SPACES.map(s => 
+    `<option value="${s}" ${s === defect.space ? 'selected' : ''}>${s}</option>`
+  ).join('');
+  const tradeOptions = TRADES.map(t => 
+    `<option value="${t}" ${t === defect.trade ? 'selected' : ''}>${t}</option>`
+  ).join('');
+  
+  card.innerHTML = `
+    <div class="defect-head">
+      <div class="defect-num">${String(displayNum).padStart(2, '0')}</div>
+      <span class="defect-space-tag">${defect.space}</span>
+      <span class="defect-trade-tag">${defect.trade}</span>
+      <input class="defect-title-input" type="text" 
+             placeholder="紀錄項目" 
+             value="${defect.title}"
+             onchange="updateDefect(${defect.id}, 'title', this.value)">
+      <button class="defect-delete" onclick="removeDefect(${defect.id})">×</button>
+    </div>
+    <div class="defect-body">
+      <div class="defect-row">
+        <div class="field">
+          <label>空間</label>
+          <div class="select-wrap">
+            <select onchange="updateDefect(${defect.id}, 'space', this.value); render(); updateStats()">${spaceOptions}</select>
+          </div>
+        </div>
+        <div class="field">
+          <label>工種</label>
+          <div class="select-wrap">
+            <select onchange="updateDefect(${defect.id}, 'trade', this.value); render()">${tradeOptions}</select>
+          </div>
+        </div>
+        <div class="field field-full">
+          <label>具體位置</label>
+          <input type="text" placeholder="例：客廳電視牆右側、距地 120cm" 
+                 value="${defect.location}"
+                 onchange="updateDefect(${defect.id}, 'location', this.value)">
+        </div>
+        <div class="field field-full">
+          <label>說明（可口述語音輸入）</label>
+          <textarea placeholder="按 iPad 鍵盤上的麥克風圖示，直接語音輸入文字..." 
+                    onchange="updateDefect(${defect.id}, 'desc', this.value)">${defect.desc}</textarea>
+        </div>
+      </div>
+      
+      <div class="photo-area">
+        <div class="photo-label">現場照片（點擊上傳/拍照）</div>
+        <div class="photo-grid" id="photos-${defect.id}">
+          ${renderPhotoSlots(defect.id, 4, defect.photos)}
+        </div>
+      </div>
+    </div>
+  `;
+  
+  return card;
+}
+
+function renderPhotoSlots(defectId, count, existingPhotos = []) {
+  return Array.from({length: count}, (_, i) => {
+    const hasPhoto = existingPhotos[i];
+    return `
+      <label class="photo-slot ${hasPhoto ? 'has-photo' : ''}" data-slot="${i}">
+        ${hasPhoto ? `<img src="${hasPhoto}">` : '<span class="plus">+</span>'}
+        <input type="file" accept="image/*" capture="environment" 
+               onchange="handlePhotoUpload(event, ${defectId}, ${i})">
+        <button type="button" class="remove-photo" onclick="event.preventDefault(); removePhoto(${defectId}, ${i})">×</button>
+      </label>
+    `;
+  }).join('');
+}
+
+function handlePhotoUpload(event, defectId, slotIndex) {
+  const file = event.target.files[0];
+  if (!file) return;
+  
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const slot = document.querySelector(`#photos-${defectId} [data-slot="${slotIndex}"]`);
+    const oldImg = slot.querySelector('img');
+    if (oldImg) oldImg.remove();
+    
+    const img = document.createElement('img');
+    img.src = e.target.result;
+    slot.insertBefore(img, slot.firstChild);
+    slot.classList.add('has-photo');
+    
+    const defect = defects.find(d => d.id === defectId);
+    if (defect) defect.photos[slotIndex] = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function removePhoto(defectId, slotIndex) {
+  const slot = document.querySelector(`#photos-${defectId} [data-slot="${slotIndex}"]`);
+  const img = slot.querySelector('img');
+  if (img) img.remove();
+  slot.classList.remove('has-photo');
+  const input = slot.querySelector('input[type="file"]');
+  if (input) input.value = '';
+  
+  const defect = defects.find(d => d.id === defectId);
+  if (defect) defect.photos[slotIndex] = null;
+}
+
+function updateDefect(id, field, value) {
+  const defect = defects.find(d => d.id === id);
+  if (defect) defect[field] = value;
+}
+
+function removeDefect(id) {
+  if (!confirm('確定刪除此筆紀錄？')) return;
+  defects = defects.filter(d => d.id !== id);
+  render();
+  updateStats();
+}
+
+function updateStats() {
+  document.getElementById('stat-total').textContent = defects.length;
+  
+  const grid = document.getElementById('space-stats-grid');
+  if (defects.length === 0) {
+    grid.innerHTML = '<div class="space-stats-empty">尚無紀錄</div>';
+    return;
+  }
+  
+  // 統計每個空間的筆數
+  const counts = {};
+  defects.forEach(d => {
+    counts[d.space] = (counts[d.space] || 0) + 1;
+  });
+  
+  // 按 SPACES 既定順序排列
+  const sortedSpaces = SPACES.filter(s => counts[s]);
+  
+  grid.innerHTML = sortedSpaces.map(s => 
+    `<span class="space-stat-pill">${s}<b>${counts[s]}</b></span>`
+  ).join('');
+}
+
+function switchView(view, el) {
+  currentView = view;
+  document.querySelectorAll('.view-switch button').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  render();
+}
+
+function initSignature(canvasId, placeholderId, key) {
+  const canvas = document.getElementById(canvasId);
+  const placeholder = document.getElementById(placeholderId);
+  const ctx = canvas.getContext('2d');
+  
+  function resize() {
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    ctx.scale(dpr, dpr);
+    ctx.strokeStyle = '#1C1C1C';
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  
+  let drawing = false, lastX = 0, lastY = 0;
+  
+  function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const point = e.touches ? e.touches[0] : e;
+    return { x: point.clientX - rect.left, y: point.clientY - rect.top };
+  }
+  
+  function start(e) {
+    e.preventDefault();
+    drawing = true;
+    const pos = getPos(e);
+    lastX = pos.x; lastY = pos.y;
+    placeholder.style.display = 'none';
+    document.getElementById('sig-' + key + '-date').textContent = new Date().toLocaleDateString('zh-TW');
+  }
+  
+  function draw(e) {
+    if (!drawing) return;
+    e.preventDefault();
+    const pos = getPos(e);
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(pos.x, pos.y);
+    ctx.stroke();
+    lastX = pos.x; lastY = pos.y;
+  }
+  
+  function stop() { drawing = false; }
+  
+  canvas.addEventListener('mousedown', start);
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mouseup', stop);
+  canvas.addEventListener('mouseleave', stop);
+  canvas.addEventListener('touchstart', start);
+  canvas.addEventListener('touchmove', draw);
+  canvas.addEventListener('touchend', stop);
+}
+
+function clearSig(key) {
+  const canvas = document.getElementById('sig-' + key);
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  document.getElementById('ph-' + key).style.display = 'flex';
+  document.getElementById('sig-' + key + '-date').textContent = '—';
+}
+
+function exportPDF() { window.print(); }
+
+function resetForm() {
+  if (!confirm('將清空所有紀錄與簽名，確定？')) return;
+  defects = [];
+  defectIdCounter = 0;
+  render();
+  clearSig('owner');
+  clearSig('designer');
+  updateStats();
+}
+
+init();
+</script>
+
+</body>
+</html>

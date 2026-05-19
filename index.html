@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>漣一設計 工地工具集</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  
+  :root {
+    --bg: #F5F1EA;
+    --paper: #FFFFFF;
+    --ink: #1C1C1C;
+    --ink-soft: #5A5A5A;
+    --line: #D9D2C5;
+    --accent: #3A2E1F;
+  }
+  
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  .wrap {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 60px 20px;
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center;
+  }
+  
+  .brand {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+  
+  .logo {
+    width: 70px; height: 70px;
+    border: 2px solid var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; font-weight: 700; line-height: 1.1;
+    letter-spacing: 2px;
+    margin: 0 auto 18px;
+  }
+  
+  .brand-title {
+    font-size: 22px; font-weight: 700;
+    letter-spacing: 4px;
+    margin-bottom: 6px;
+  }
+  
+  .brand-sub {
+    font-size: 11px;
+    color: var(--ink-soft);
+    letter-spacing: 4px;
+  }
+  
+  .divider {
+    width: 40px; height: 1px;
+    background: var(--ink);
+    margin: 24px auto 0;
+  }
+  
+  .tagline {
+    text-align: center;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 36px;
+    letter-spacing: 1.5px;
+  }
+  
+  .tool-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  
+  @media (max-width: 640px) {
+    .tool-grid { grid-template-columns: 1fr; }
+    .wrap { padding: 40px 16px; }
+  }
+  
+  .tool-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 28px 24px;
+    text-decoration: none;
+    color: var(--ink);
+    display: block;
+    position: relative;
+    transition: all 0.25s;
+    overflow: hidden;
+  }
+  
+  .tool-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--ink);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+  
+  .tool-card:hover {
+    border-color: var(--ink);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+  }
+  .tool-card:hover::before { transform: scaleX(1); }
+  
+  .tool-icon {
+    width: 44px; height: 44px;
+    border: 1.5px solid var(--ink);
+    border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 18px;
+    font-size: 22px;
+  }
+  
+  .tool-name {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+  }
+  
+  .tool-name-en {
+    font-size: 10px;
+    color: var(--ink-soft);
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+  }
+  
+  .tool-desc {
+    font-size: 12px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  
+  .tool-arrow {
+    margin-top: 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+  .tool-arrow::after {
+    content: '→';
+    transition: transform 0.2s;
+  }
+  .tool-card:hover .tool-arrow::after {
+    transform: translateX(4px);
+  }
+  
+  .footer {
+    margin-top: 50px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--ink-soft);
+    letter-spacing: 1px;
+  }
+  
+  .tip-box {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 14px 18px;
+    margin-top: 30px;
+    font-size: 12px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+  .tip-box b {
+    color: var(--ink);
+    font-weight: 600;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  
+  <div class="brand">
+    <div class="logo">漣一<br>設計</div>
+    <div class="brand-title">漣一設計</div>
+    <div class="brand-sub">SITE TOOLKIT</div>
+    <div class="divider"></div>
+  </div>
+  
+  <div class="tagline">選擇要使用的工具</div>
+  
+  <div class="tool-grid">
+    
+    <a href="forms/inspection.html" class="tool-card">
+      <div class="tool-icon">⊟</div>
+      <div class="tool-name">初驗表單</div>
+      <div class="tool-name-en">INSPECTION FORM</div>
+      <div class="tool-desc">
+        工地驗收用，記錄各空間缺失項目，<br>
+        含照片、業主簽名、PDF 報告。
+      </div>
+      <div class="tool-arrow">開始驗收</div>
+    </a>
+    
+    <a href="forms/meeting.html" class="tool-card">
+      <div class="tool-icon">◌</div>
+      <div class="tool-name">工地會議紀錄</div>
+      <div class="tool-name-en">SITE MEETING MINUTES</div>
+      <div class="tool-desc">
+        工進會議用，記錄決議、待辦、變更、提問，<br>
+        含負責人與完成日。
+      </div>
+      <div class="tool-arrow">開始會議</div>
+    </a>
+    
+  </div>
+  
+  <div class="tip-box">
+    <b>📱 加到 iPad 主畫面：</b>Safari 開啟 → 點分享 → 加入主畫面 → 之後像 App 一樣點開即可使用。<br>
+    <b>🔒 注意：</b>本工具為純前端網頁，重整或關閉分頁將清空當下資料，請使用中分段匯出 PDF 備份。
+  </div>
+  
+  <div class="footer">
+    漣一設計 © 漣一室內設計
+  </div>
+  
+</div>
+
+</body>
+</html>
