@@ -15,6 +15,8 @@
     --line: #D9D2C5;
     --accent: #3A2E1F;
     --space-bg: #EDE5D3;
+    --type-repair: #5A7BA8;   /* 修繕 - 藍 */
+    --type-add: #8B5A9F;      /* 新增 - 紫 */
   }
   
   html, body {
@@ -33,7 +35,7 @@
     padding: 18px 20px;
     position: sticky; top: 0; z-index: 100;
   }
-  .header-inner { display: flex; align-items: center; gap: 14px; max-width: 900px; margin: 0 auto; }
+  .header-inner { display: flex; align-items: center; gap: 14px; max-width: 1100px; margin: 0 auto; }
   .logo {
     width: 44px; height: 44px;
     border: 1.5px solid var(--ink);
@@ -55,7 +57,7 @@
   }
   .back-link:hover { color: var(--ink); border-color: var(--ink); }
   
-  .container { max-width: 900px; margin: 0 auto; padding: 20px 16px 120px; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 20px 16px 120px; }
   
   .section {
     background: var(--paper);
@@ -66,35 +68,40 @@
   }
   
   .section-header {
-    padding: 16px 20px;
+    padding: 14px 18px;
     border-bottom: 1px solid var(--line);
     display: flex; align-items: center; justify-content: space-between;
     background: linear-gradient(180deg, #FAF7F1, var(--paper));
     gap: 12px;
   }
-  .section-title { font-size: 14px; font-weight: 700; letter-spacing: 1.5px; }
+  .section-title { font-size: 13px; font-weight: 700; letter-spacing: 1.5px; }
   .section-title-en {
     display: block; font-size: 9px; color: var(--ink-soft);
     letter-spacing: 2px; margin-top: 2px; font-weight: 400;
   }
   
-  .section-body { padding: 20px; }
+  .section-body { padding: 18px; }
   
-  /* Form Fields */
-  .field-group { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 20px; }
+  /* ============ 緊湊 4 欄佈局 ============ */
+  .field-group { 
+    display: grid; 
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 14px 18px; 
+  }
   .field-full { grid-column: 1 / -1; }
+  
   .field { display: flex; flex-direction: column; }
   .field label {
-    font-size: 11px; color: var(--ink-soft);
-    letter-spacing: 1px; margin-bottom: 6px;
+    font-size: 10px; color: var(--ink-soft);
+    letter-spacing: 1.2px; margin-bottom: 4px;
     text-transform: uppercase;
   }
   .field input, .field textarea, .field select {
     border: none;
     border-bottom: 1px solid var(--line);
     background: transparent;
-    padding: 6px 0;
-    font-size: 15px;
+    padding: 5px 0;
+    font-size: 14px;
     font-family: inherit;
     color: var(--ink);
     outline: none;
@@ -104,7 +111,7 @@
   .field input:focus, .field textarea:focus, .field select:focus {
     border-bottom-color: var(--ink);
   }
-  .field textarea { min-height: 60px; resize: vertical; }
+  .field textarea { min-height: 50px; resize: vertical; }
   
   /* View Switcher */
   .view-switch {
@@ -116,8 +123,8 @@
   }
   .view-switch button {
     border: none; background: transparent;
-    padding: 7px 14px;
-    font-size: 12px; font-weight: 600;
+    padding: 6px 12px;
+    font-size: 11px; font-weight: 600;
     cursor: pointer;
     font-family: inherit;
     color: var(--ink-soft);
@@ -127,132 +134,155 @@
     background: var(--ink); color: var(--paper);
   }
   
-  /* Space Statistics (替代原本的 stats) */
-  .space-stats {
+  /* 統計區 - 緊湊版 */
+  .top-stats {
     background: var(--paper);
     border: 1px solid var(--line);
     border-radius: 4px;
     margin-bottom: 16px;
-    padding: 16px 18px;
-  }
-  .space-stats-header {
+    padding: 12px 16px;
     display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 12px;
+    flex-wrap: wrap; gap: 10px;
   }
-  .space-stats-title {
-    font-size: 12px; font-weight: 700;
+  .top-stats-title {
+    font-size: 11px; font-weight: 700;
     letter-spacing: 1.5px;
-    color: var(--ink);
   }
-  .space-stats-total {
+  .top-stats-grid {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    flex: 1; justify-content: flex-end;
+  }
+  .top-stats-total {
     font-size: 11px; color: var(--ink-soft);
     letter-spacing: 1px;
   }
-  .space-stats-total b {
+  .top-stats-total b {
     color: var(--ink);
     font-size: 14px;
     margin: 0 2px;
   }
-  .space-stats-grid {
-    display: flex; flex-wrap: wrap; gap: 8px;
+  .stat-pill {
+    border-radius: 12px;
+    padding: 4px 10px;
+    font-size: 11px;
+    display: inline-flex; align-items: center; gap: 5px;
   }
-  .space-stat-pill {
-    background: var(--space-bg);
-    border-radius: 14px;
-    padding: 5px 12px;
-    font-size: 12px;
-    display: inline-flex; align-items: center; gap: 6px;
-    color: var(--ink);
-  }
-  .space-stat-pill b {
-    background: var(--ink);
-    color: var(--paper);
-    border-radius: 9px;
-    min-width: 18px;
-    height: 18px;
+  .stat-pill b {
+    background: rgba(255,255,255,0.25);
+    border-radius: 8px;
+    min-width: 16px;
+    height: 16px;
     display: inline-flex; align-items: center; justify-content: center;
     font-size: 10px;
-    padding: 0 5px;
+    padding: 0 4px;
   }
-  .space-stats-empty {
+  .stat-pill.space {
+    background: var(--space-bg);
+    color: var(--ink);
+  }
+  .stat-pill.space b {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .stat-pill.repair { background: var(--type-repair); color: var(--paper); }
+  .stat-pill.add { background: var(--type-add); color: var(--paper); }
+  .top-stats-empty {
     color: var(--ink-soft);
-    font-size: 12px;
+    font-size: 11px;
     letter-spacing: 1px;
   }
   
-  /* Space Group */
-  .space-group {
-    margin-bottom: 18px;
+  /* Group */
+  .item-group {
+    margin-bottom: 16px;
     border: 1px solid var(--line);
     border-radius: 4px;
     overflow: hidden;
     background: var(--paper);
   }
-  .space-group-header {
-    background: var(--space-bg);
-    padding: 12px 16px;
+  .item-group-header {
+    padding: 10px 14px;
     display: flex; align-items: center; justify-content: space-between;
     border-bottom: 1px solid var(--line);
   }
-  .space-group-title {
+  .item-group-header.space {
+    background: var(--space-bg);
+    color: var(--ink);
+  }
+  .item-group-header.repair {
+    background: var(--type-repair);
+    color: var(--paper);
+  }
+  .item-group-header.add {
+    background: var(--type-add);
+    color: var(--paper);
+  }
+  
+  .item-group-title {
     font-size: 13px; font-weight: 700;
     letter-spacing: 2px;
     display: flex; align-items: center; gap: 8px;
   }
-  .space-group-title::before {
+  .item-group-title::before {
     content: '';
-    width: 4px; height: 16px;
-    background: var(--ink);
+    width: 4px; height: 14px;
+    background: currentColor;
     display: inline-block;
+    opacity: 0.5;
   }
-  .space-group-count {
-    font-size: 11px; color: var(--ink-soft);
+  .item-group-count {
+    font-size: 11px;
     letter-spacing: 1px;
+    opacity: 0.85;
   }
-  .space-group-body {
-    padding: 14px;
-    display: flex; flex-direction: column; gap: 12px;
+  .item-group-body {
+    padding: 12px;
+    display: flex; flex-direction: column; gap: 10px;
   }
   
-  /* Defect Cards */
-  .defect-card {
+  /* Item Cards */
+  .item-card {
     border: 1px solid var(--line);
     border-radius: 4px;
     overflow: hidden;
     background: var(--paper);
   }
-  .defect-card:focus-within { border-color: var(--ink); }
+  .item-card:focus-within { border-color: var(--ink); }
   
-  .defect-head {
-    display: flex; align-items: center; gap: 10px;
-    padding: 12px 14px;
+  .item-head {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 12px;
     background: #FAF7F1;
     border-bottom: 1px solid var(--line);
     flex-wrap: wrap;
   }
-  .defect-num {
-    width: 26px; height: 26px;
+  .item-num {
+    width: 24px; height: 24px;
     background: var(--ink); color: var(--paper);
     display: flex; align-items: center; justify-content: center;
-    font-size: 11px; font-weight: 700;
+    font-size: 10px; font-weight: 700;
     border-radius: 2px;
     flex-shrink: 0;
   }
-  .defect-space-tag, .defect-trade-tag {
-    font-size: 11px; font-weight: 600;
+  .item-type-tag, .item-space-tag, .item-trade-tag {
+    font-size: 10px; font-weight: 600;
     padding: 3px 8px;
     border-radius: 10px;
     letter-spacing: 0.5px;
   }
-  .defect-space-tag {
+  .item-type-tag { color: var(--paper); }
+  .item-type-tag.repair { background: var(--type-repair); }
+  .item-type-tag.add { background: var(--type-add); }
+  
+  .item-space-tag {
     background: var(--space-bg);
     color: var(--accent);
   }
-  .defect-trade-tag {
+  .item-trade-tag {
     background: #E0D5BE;
     color: var(--accent);
   }
-  .defect-title-input {
+  .item-title-input {
     flex: 1; min-width: 140px;
     border: none; background: transparent;
     font-size: 14px; font-weight: 600;
@@ -260,25 +290,23 @@
     outline: none;
     padding: 4px 0;
   }
-  .defect-delete {
+  .item-delete {
     background: none; border: none;
     color: var(--ink-soft);
     font-size: 18px; cursor: pointer;
     padding: 4px 8px; line-height: 1;
   }
-  .defect-delete:hover { color: #B8551E; }
+  .item-delete:hover { color: #B8551E; }
   
-  .defect-body { padding: 14px; }
+  .item-body { padding: 12px; }
   
-  .defect-row {
+  .item-fields {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(4, 1fr);
     gap: 12px 14px;
     margin-bottom: 12px;
   }
-  .defect-row .field-full { grid-column: 1 / -1; }
   
-  /* Custom select */
   .select-wrap {
     position: relative;
     border-bottom: 1px solid var(--line);
@@ -289,7 +317,7 @@
     -webkit-appearance: none;
     border: none;
     background: transparent;
-    padding: 6px 24px 6px 0;
+    padding: 5px 22px 5px 0;
     font-size: 14px;
     font-family: inherit;
     color: var(--ink);
@@ -307,10 +335,10 @@
   }
   
   /* Photo */
-  .photo-area { margin-top: 10px; }
+  .photo-area { margin-top: 8px; }
   .photo-label {
-    font-size: 11px; color: var(--ink-soft);
-    letter-spacing: 1px; margin-bottom: 8px;
+    font-size: 10px; color: var(--ink-soft);
+    letter-spacing: 1.2px; margin-bottom: 6px;
     text-transform: uppercase;
   }
   .photo-grid {
@@ -372,7 +400,7 @@
     border: 1px solid var(--line);
     border-radius: 4px;
     background: var(--paper);
-    height: 140px;
+    height: 130px;
     position: relative;
     overflow: hidden;
   }
@@ -390,7 +418,7 @@
     cursor: pointer; padding: 4px 8px;
   }
   .sig-meta {
-    margin-top: 8px;
+    margin-top: 6px;
     font-size: 11px; color: var(--ink-soft);
     letter-spacing: 1px;
     display: flex; justify-content: space-between;
@@ -406,13 +434,13 @@
     box-shadow: 0 -2px 8px rgba(0,0,0,0.04);
   }
   .action-bar-inner {
-    max-width: 900px; margin: 0 auto;
+    max-width: 1100px; margin: 0 auto;
     display: flex; gap: 10px; width: 100%;
   }
   .action-bar .btn { flex: 1; }
   
-  /* Add Defect Button */
-  .add-defect-btn {
+  /* Add Item Button */
+  .add-item-btn {
     width: 100%;
     padding: 14px;
     border: 1.5px dashed var(--line);
@@ -422,12 +450,12 @@
     letter-spacing: 1px;
     cursor: pointer;
     border-radius: 4px;
-    margin-top: 14px;
+    margin-top: 12px;
     font-family: inherit;
   }
-  .add-defect-btn:hover { border-color: var(--ink); color: var(--ink); }
+  .add-item-btn:hover { border-color: var(--ink); color: var(--ink); }
   
-  /* Quick Add Modal */
+  /* Modal */
   .modal-backdrop {
     position: fixed; inset: 0;
     background: rgba(0,0,0,0.5);
@@ -457,9 +485,9 @@
   }
   .modal-sub {
     font-size: 12px; color: var(--ink-soft);
-    margin-bottom: 18px;
+    margin-bottom: 16px;
   }
-  .modal-step { margin-bottom: 18px; }
+  .modal-step { margin-bottom: 16px; }
   .modal-step-label {
     font-size: 11px; color: var(--ink-soft);
     letter-spacing: 1.5px; margin-bottom: 8px;
@@ -467,9 +495,9 @@
   }
   .chip-group { display: flex; flex-wrap: wrap; gap: 6px; }
   .chip {
-    padding: 8px 14px;
+    padding: 7px 13px;
     border: 1px solid var(--line);
-    border-radius: 18px;
+    border-radius: 16px;
     background: var(--paper);
     font-size: 13px;
     cursor: pointer;
@@ -479,11 +507,14 @@
     background: var(--ink); color: var(--paper);
     border-color: var(--ink);
   }
+  .chip.type-chip.active.repair { background: var(--type-repair); border-color: var(--type-repair); }
+  .chip.type-chip.active.add { background: var(--type-add); border-color: var(--type-add); }
+  
   .modal-actions {
     display: flex; gap: 10px;
     position: sticky; bottom: 0;
     background: var(--paper);
-    padding-top: 16px;
+    padding-top: 14px;
     margin-top: 8px;
     border-top: 1px solid var(--line);
   }
@@ -494,33 +525,41 @@
     @page { margin: 12mm; size: A4; }
     body { background: white; font-size: 11pt; }
     .header { position: static; }
-    .action-bar, .add-defect-btn, .defect-delete, .sig-clear,
+    .action-bar, .add-item-btn, .item-delete, .sig-clear,
     .photo-slot .remove-photo, .view-switch, .modal-backdrop,
     .back-link { display: none !important; }
     .photo-slot:not(.has-photo) { display: none; }
-    .section, .defect-card, .space-group { break-inside: avoid; border: 1px solid #999; }
+    .section, .item-card, .item-group { break-inside: avoid; border: 1px solid #999; }
     .container { padding: 0; max-width: 100%; }
     input, textarea, select {
       border-bottom: 1px solid #ccc !important;
       background: white !important;
     }
-    .space-group-header,
-    .defect-space-tag,
-    .defect-trade-tag,
-    .space-stat-pill,
-    .space-stat-pill b {
+    .item-group-header,
+    .item-type-tag,
+    .item-space-tag,
+    .item-trade-tag,
+    .stat-pill {
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
     }
   }
   
-  @media (max-width: 640px) {
+  /* 響應式 */
+  @media (max-width: 900px) {
+    .field-group { grid-template-columns: repeat(2, 1fr); }
+    .item-fields { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 540px) {
     .field-group { grid-template-columns: 1fr; }
-    .defect-row { grid-template-columns: 1fr; }
+    .field-full { grid-column: 1; }
+    .item-fields { grid-template-columns: 1fr; }
     .sig-row { grid-template-columns: 1fr; }
     .container { padding: 14px 12px 110px; }
-    .section-body { padding: 16px; }
+    .section-body { padding: 14px; }
     .section-header { flex-direction: column; align-items: flex-start; }
+    .top-stats { flex-direction: column; align-items: flex-start; }
+    .top-stats-grid { justify-content: flex-start; }
   }
 </style>
 </head>
@@ -539,18 +578,16 @@
 
 <div class="container">
 
-  <!-- 空間統計 -->
-  <div class="space-stats">
-    <div class="space-stats-header">
-      <div class="space-stats-title">空間統計</div>
-      <div class="space-stats-total">共 <b id="stat-total">0</b> 筆</div>
+  <!-- 統計區（緊湊版） -->
+  <div class="top-stats">
+    <div class="top-stats-title" id="stats-mode-title">空間統計</div>
+    <div class="top-stats-grid" id="stats-grid">
+      <div class="top-stats-empty">尚無紀錄</div>
     </div>
-    <div class="space-stats-grid" id="space-stats-grid">
-      <div class="space-stats-empty">尚無紀錄</div>
-    </div>
+    <div class="top-stats-total">共 <b id="stat-total">0</b> 筆</div>
   </div>
 
-  <!-- 基本資訊 -->
+  <!-- 基本資訊（4 欄佈局，跟會議紀錄一致） -->
   <section class="section">
     <div class="section-header">
       <div>
@@ -572,18 +609,6 @@
           <label>聯絡電話</label>
           <input type="tel" placeholder="例：0988-888888">
         </div>
-        <div class="field field-full">
-          <label>案場地址</label>
-          <input type="text" placeholder="例：國泰 THE PARK">
-        </div>
-        <div class="field">
-          <label>漣一設計驗收人員</label>
-          <input type="text">
-        </div>
-        <div class="field">
-          <label>客戶驗收代表</label>
-          <input type="text">
-        </div>
         <div class="field">
           <label>驗收日期</label>
           <input type="date" id="inspection-date">
@@ -595,6 +620,18 @@
             <option>複驗</option>
             <option>完工驗收</option>
           </select>
+        </div>
+        <div class="field field-full">
+          <label>案場地址</label>
+          <input type="text" placeholder="例：國泰 THE PARK">
+        </div>
+        <div class="field">
+          <label>漣一設計驗收人員</label>
+          <input type="text">
+        </div>
+        <div class="field">
+          <label>客戶驗收代表</label>
+          <input type="text">
         </div>
       </div>
     </div>
@@ -609,13 +646,14 @@
       </div>
       <div class="view-switch">
         <button class="active" onclick="switchView('space', this)">依空間</button>
+        <button onclick="switchView('type', this)">依類型</button>
         <button onclick="switchView('trade', this)">依工種</button>
         <button onclick="switchView('time', this)">依時序</button>
       </div>
     </div>
     <div class="section-body">
-      <div id="defect-container"></div>
-      <button class="add-defect-btn" onclick="openQuickAdd()">+ 新增紀錄</button>
+      <div id="item-container"></div>
+      <button class="add-item-btn" onclick="openQuickAdd()">+ 新增紀錄</button>
     </div>
   </section>
 
@@ -629,8 +667,7 @@
     </div>
     <div class="section-body">
       <p style="font-size:13px;color:var(--ink-soft);line-height:1.7;margin-bottom:16px">
-        驗收完成後，請業主代表與漣一設計驗收人員分別於下方簽名確認。<br>
-        簽名後本表單即為正式驗收記錄。
+        驗收完成後，請業主代表與漣一設計驗收人員分別於下方簽名確認。
       </p>
       <div class="sig-row">
         <div>
@@ -638,7 +675,7 @@
             <label>業主驗收代表</label>
             <input type="text">
           </div>
-          <div class="sig-canvas-wrap" style="margin-top:10px">
+          <div class="sig-canvas-wrap" style="margin-top:8px">
             <canvas id="sig-owner"></canvas>
             <div class="sig-placeholder" id="ph-owner">請於此處簽名</div>
             <button class="sig-clear" onclick="clearSig('owner')">清除</button>
@@ -652,7 +689,7 @@
             <label>漣一設計驗收人員</label>
             <input type="text">
           </div>
-          <div class="sig-canvas-wrap" style="margin-top:10px">
+          <div class="sig-canvas-wrap" style="margin-top:8px">
             <canvas id="sig-designer"></canvas>
             <div class="sig-placeholder" id="ph-designer">請於此處簽名</div>
             <button class="sig-clear" onclick="clearSig('designer')">清除</button>
@@ -665,10 +702,9 @@
     </div>
   </section>
 
-  <!-- 公司資訊 -->
   <section class="section">
-    <div class="section-body" style="text-align:center;padding:24px">
-      <div style="font-weight:700;letter-spacing:2px;margin-bottom:6px">漣一設計｜INSPECTION SYSTEM</div>
+    <div class="section-body" style="text-align:center;padding:20px">
+      <div style="font-weight:700;letter-spacing:2px;margin-bottom:4px">漣一設計｜INSPECTION SYSTEM</div>
       <div style="font-size:12px;color:var(--ink-soft);letter-spacing:1px">
         本表單為驗收正式紀錄文件
       </div>
@@ -681,20 +717,25 @@
 <div class="modal-backdrop" id="quick-add-modal">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="modal-title">新增驗收紀錄</div>
-    <div class="modal-sub">先選空間與工種，再填細項</div>
+    <div class="modal-sub">先選類型、空間與工種，再填細項</div>
     
     <div class="modal-step">
-      <div class="modal-step-label">① 空間</div>
+      <div class="modal-step-label">① 紀錄類型</div>
+      <div class="chip-group" id="type-chips"></div>
+    </div>
+    
+    <div class="modal-step">
+      <div class="modal-step-label">② 空間</div>
       <div class="chip-group" id="space-chips"></div>
     </div>
     
     <div class="modal-step">
-      <div class="modal-step-label">② 工種</div>
+      <div class="modal-step-label">③ 工種</div>
       <div class="chip-group" id="trade-chips"></div>
     </div>
     
     <div class="modal-step">
-      <div class="modal-step-label">③ 紀錄項目（可直接點或自行輸入）</div>
+      <div class="modal-step-label">④ 紀錄項目（可直接點或自行輸入）</div>
       <div class="chip-group" id="item-chips"></div>
       <input type="text" id="custom-item" placeholder="或直接輸入自訂內容..." 
              style="margin-top:10px;padding:10px;border:1px solid var(--line);border-radius:4px;width:100%;font-family:inherit;font-size:14px">
@@ -715,7 +756,12 @@
 </div>
 
 <script>
-/* 資料定義 */
+/* 紀錄類型：修繕 / 新增 */
+const TYPES = [
+  { key: 'repair', label: '修繕' },
+  { key: 'add', label: '新增' },
+];
+
 const SPACES = ['玄關', '客廳', '餐廳', '廚房', '主臥', '次臥', '書房', '主衛', '客衛', '陽台', '儲藏室', '全室', '其他'];
 
 const TRADES = ['油漆', '木作', '木地板', '泥作', '水電', '燈具', '空調', '五金', '玻璃', '窗簾', '清潔', '其他'];
@@ -735,10 +781,10 @@ const TRADE_ITEMS = {
   '其他': ['']
 };
 
-let defects = [];
-let defectIdCounter = 0;
+let items = [];
+let itemIdCounter = 0;
 let currentView = 'space';
-let quickAddState = { space: null, trade: null, item: null };
+let quickAddState = { type: null, space: null, trade: null, item: null };
 
 function init() {
   const today = new Date();
@@ -747,10 +793,17 @@ function init() {
   initSignature('sig-owner', 'ph-owner', 'owner');
   initSignature('sig-designer', 'ph-designer', 'designer');
   
+  renderTypeChips();
   renderSpaceChips();
   renderTradeChips();
   render();
   updateStats();
+}
+
+function renderTypeChips() {
+  document.getElementById('type-chips').innerHTML = TYPES.map(t => 
+    `<span class="chip type-chip ${t.key}" onclick="selectModalChip('type', '${t.key}', this)">${t.label}</span>`
+  ).join('');
 }
 
 function renderSpaceChips() {
@@ -773,8 +826,10 @@ function renderItemChips(trade) {
 }
 
 function openQuickAdd() {
-  quickAddState = { space: null, trade: null, item: null };
-  document.querySelectorAll('#space-chips .chip, #trade-chips .chip').forEach(c => c.classList.remove('active'));
+  quickAddState = { type: null, space: null, trade: null, item: null };
+  renderTypeChips();
+  renderSpaceChips();
+  renderTradeChips();
   document.getElementById('item-chips').innerHTML = '<span style="color:var(--ink-soft);font-size:12px">請先選擇工種</span>';
   document.getElementById('custom-item').value = '';
   document.getElementById('quick-add-modal').classList.add('active');
@@ -785,31 +840,25 @@ function closeQuickAdd() {
 }
 
 function selectModalChip(type, value, el) {
-  // 處理空間「其他」自填
   if (type === 'space' && value === '其他') {
-    const customSpace = prompt('請輸入空間名稱（例：辦公區、店面前台、會議室、員工休息區...）');
+    const customSpace = prompt('請輸入空間名稱（例：辦公區、店面前台、會議室...）');
     if (!customSpace || !customSpace.trim()) return;
     value = customSpace.trim();
-    // 把「其他」chip 的文字改為自填內容（暫時顯示用）
     el.textContent = value;
     el.dataset.custom = 'true';
-  } else if (type === 'space' && el.dataset.custom === 'true') {
-    // 重新點擊其他被改過名字的 chip，還原成「其他」
-    el.textContent = '其他';
-    delete el.dataset.custom;
   }
   
   quickAddState[type] = value;
   const parent = el.parentNode;
   parent.querySelectorAll('.chip').forEach(c => {
     c.classList.remove('active');
-    // 還原其他被改過的「其他」chip
     if (c !== el && c.dataset.custom === 'true') {
       c.textContent = '其他';
       delete c.dataset.custom;
     }
   });
   el.classList.add('active');
+  
   if (type === 'trade') {
     quickAddState.item = null;
     renderItemChips(value);
@@ -817,27 +866,24 @@ function selectModalChip(type, value, el) {
 }
 
 function confirmQuickAdd() {
-  const { space, trade, item } = quickAddState;
+  const { type, space, trade, item } = quickAddState;
   const customItem = document.getElementById('custom-item').value.trim();
   const finalItem = customItem || item;
   
+  if (!type) { alert('請先選擇紀錄類型'); return; }
   if (!space) { alert('請先選擇空間'); return; }
   if (!trade) { alert('請先選擇工種'); return; }
   if (!finalItem) { alert('請選擇或輸入紀錄項目'); return; }
   
-  addDefect({
-    space, trade,
-    title: finalItem,
-    location: '',
-    desc: ''
-  });
+  addItem({ type, space, trade, title: finalItem });
   closeQuickAdd();
 }
 
-function addDefect(data = {}) {
-  const id = ++defectIdCounter;
-  defects.push({
+function addItem(data = {}) {
+  const id = ++itemIdCounter;
+  items.push({
     id,
+    type: data.type || 'repair',
     space: data.space || '客廳',
     trade: data.trade || '其他',
     title: data.title || '',
@@ -851,29 +897,41 @@ function addDefect(data = {}) {
 }
 
 function render() {
-  const container = document.getElementById('defect-container');
+  const container = document.getElementById('item-container');
   
-  if (defects.length === 0) {
+  if (items.length === 0) {
     container.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--ink-soft);font-size:13px">尚無紀錄，請點下方「+ 新增紀錄」</div>';
     return;
   }
   
   if (currentView === 'time') {
-    container.innerHTML = '<div style="display:flex;flex-direction:column;gap:12px" id="time-list"></div>';
+    container.innerHTML = '<div style="display:flex;flex-direction:column;gap:10px" id="time-list"></div>';
     const list = document.getElementById('time-list');
-    [...defects].sort((a, b) => a.createdAt - b.createdAt).forEach((d, idx) => {
-      list.appendChild(buildDefectCard(d, idx + 1));
+    [...items].sort((a, b) => a.createdAt - b.createdAt).forEach((d, idx) => {
+      list.appendChild(buildItemCard(d, idx + 1));
     });
   } else {
-    const groupBy = currentView === 'space' ? 'space' : 'trade';
+    const groupBy = currentView;
     const groups = {};
-    defects.forEach(d => {
+    items.forEach(d => {
       const key = d[groupBy] || '未分類';
       if (!groups[key]) groups[key] = [];
       groups[key].push(d);
     });
     
-    const order = currentView === 'space' ? SPACES : TRADES;
+    let order, getLabel;
+    if (currentView === 'space') {
+      order = SPACES;
+      getLabel = key => key;
+    } else if (currentView === 'trade') {
+      order = TRADES;
+      getLabel = key => key;
+    } else {
+      // type
+      order = TYPES.map(t => t.key);
+      getLabel = key => TYPES.find(t => t.key === key)?.label || key;
+    }
+    
     const sortedKeys = order.filter(k => groups[k]).concat(
       Object.keys(groups).filter(k => !order.includes(k))
     );
@@ -882,78 +940,91 @@ function render() {
     let runningNum = 0;
     sortedKeys.forEach(key => {
       const group = document.createElement('div');
-      group.className = 'space-group';
+      group.className = 'item-group';
+      let headerClass = 'space';
+      if (currentView === 'type') headerClass = key;
       group.innerHTML = `
-        <div class="space-group-header">
-          <div class="space-group-title">${key}</div>
-          <div class="space-group-count">${groups[key].length} 筆</div>
+        <div class="item-group-header ${headerClass}">
+          <div class="item-group-title">${getLabel(key)}</div>
+          <div class="item-group-count">${groups[key].length} 筆</div>
         </div>
-        <div class="space-group-body" id="group-${key}"></div>
+        <div class="item-group-body" id="group-${key}"></div>
       `;
       container.appendChild(group);
       const body = document.getElementById(`group-${key}`);
       groups[key].forEach(d => {
         runningNum++;
-        body.appendChild(buildDefectCard(d, runningNum));
+        body.appendChild(buildItemCard(d, runningNum));
       });
     });
   }
 }
 
-function buildDefectCard(defect, displayNum) {
+function buildItemCard(item, displayNum) {
   const card = document.createElement('div');
-  card.className = 'defect-card';
-  card.dataset.id = defect.id;
+  card.className = 'item-card';
+  card.dataset.id = item.id;
   
+  const typeLabel = TYPES.find(t => t.key === item.type)?.label || item.type;
+  const typeOptions = TYPES.map(t => 
+    `<option value="${t.key}" ${t.key === item.type ? 'selected' : ''}>${t.label}</option>`
+  ).join('');
   const spaceOptions = SPACES.map(s => 
-    `<option value="${s}" ${s === defect.space ? 'selected' : ''}>${s}</option>`
+    `<option value="${s}" ${s === item.space ? 'selected' : ''}>${s}</option>`
   ).join('');
   const tradeOptions = TRADES.map(t => 
-    `<option value="${t}" ${t === defect.trade ? 'selected' : ''}>${t}</option>`
+    `<option value="${t}" ${t === item.trade ? 'selected' : ''}>${t}</option>`
   ).join('');
   
   card.innerHTML = `
-    <div class="defect-head">
-      <div class="defect-num">${String(displayNum).padStart(2, '0')}</div>
-      <span class="defect-space-tag">${defect.space}</span>
-      <span class="defect-trade-tag">${defect.trade}</span>
-      <input class="defect-title-input" type="text" 
+    <div class="item-head">
+      <div class="item-num">${String(displayNum).padStart(2, '0')}</div>
+      <span class="item-type-tag ${item.type}">${typeLabel}</span>
+      <span class="item-space-tag">${item.space}</span>
+      <span class="item-trade-tag">${item.trade}</span>
+      <input class="item-title-input" type="text" 
              placeholder="紀錄項目" 
-             value="${defect.title}"
-             onchange="updateDefect(${defect.id}, 'title', this.value)">
-      <button class="defect-delete" onclick="removeDefect(${defect.id})">×</button>
+             value="${item.title}"
+             onchange="updateItem(${item.id}, 'title', this.value)">
+      <button class="item-delete" onclick="removeItem(${item.id})">×</button>
     </div>
-    <div class="defect-body">
-      <div class="defect-row">
+    <div class="item-body">
+      <div class="item-fields">
+        <div class="field">
+          <label>類型</label>
+          <div class="select-wrap">
+            <select onchange="updateItem(${item.id}, 'type', this.value); render(); updateStats()">${typeOptions}</select>
+          </div>
+        </div>
         <div class="field">
           <label>空間</label>
           <div class="select-wrap">
-            <select onchange="updateDefect(${defect.id}, 'space', this.value); render(); updateStats()">${spaceOptions}</select>
+            <select onchange="updateItem(${item.id}, 'space', this.value); render(); updateStats()">${spaceOptions}</select>
           </div>
         </div>
         <div class="field">
           <label>工種</label>
           <div class="select-wrap">
-            <select onchange="updateDefect(${defect.id}, 'trade', this.value); render()">${tradeOptions}</select>
+            <select onchange="updateItem(${item.id}, 'trade', this.value); render()">${tradeOptions}</select>
           </div>
         </div>
-        <div class="field field-full">
+        <div class="field">
           <label>具體位置</label>
-          <input type="text" placeholder="例：客廳電視牆右側、距地 120cm" 
-                 value="${defect.location}"
-                 onchange="updateDefect(${defect.id}, 'location', this.value)">
+          <input type="text" placeholder="例：電視牆右側" 
+                 value="${item.location}"
+                 onchange="updateItem(${item.id}, 'location', this.value)">
         </div>
-        <div class="field field-full">
+        <div class="field" style="grid-column: 1 / -1;">
           <label>說明（可口述語音輸入）</label>
           <textarea placeholder="按 iPad 鍵盤上的麥克風圖示，直接語音輸入文字..." 
-                    onchange="updateDefect(${defect.id}, 'desc', this.value)">${defect.desc}</textarea>
+                    onchange="updateItem(${item.id}, 'desc', this.value)">${item.desc}</textarea>
         </div>
       </div>
       
       <div class="photo-area">
-        <div class="photo-label">現場照片（點擊上傳/拍照）</div>
-        <div class="photo-grid" id="photos-${defect.id}">
-          ${renderPhotoSlots(defect.id, 4, defect.photos)}
+        <div class="photo-label">現場照片（點擊上傳/拍照/從相簿選取）</div>
+        <div class="photo-grid" id="photos-${item.id}">
+          ${renderPhotoSlots(item.id, 4, item.photos)}
         </div>
       </div>
     </div>
@@ -962,27 +1033,27 @@ function buildDefectCard(defect, displayNum) {
   return card;
 }
 
-function renderPhotoSlots(defectId, count, existingPhotos = []) {
+function renderPhotoSlots(itemId, count, existingPhotos = []) {
   return Array.from({length: count}, (_, i) => {
     const hasPhoto = existingPhotos[i];
     return `
       <label class="photo-slot ${hasPhoto ? 'has-photo' : ''}" data-slot="${i}">
         ${hasPhoto ? `<img src="${hasPhoto}">` : '<span class="plus">+</span>'}
-        <input type="file" accept="image/*" capture="environment" 
-               onchange="handlePhotoUpload(event, ${defectId}, ${i})">
-        <button type="button" class="remove-photo" onclick="event.preventDefault(); removePhoto(${defectId}, ${i})">×</button>
+        <input type="file" accept="image/*" 
+               onchange="handlePhotoUpload(event, ${itemId}, ${i})">
+        <button type="button" class="remove-photo" onclick="event.preventDefault(); removePhoto(${itemId}, ${i})">×</button>
       </label>
     `;
   }).join('');
 }
 
-function handlePhotoUpload(event, defectId, slotIndex) {
+function handlePhotoUpload(event, itemId, slotIndex) {
   const file = event.target.files[0];
   if (!file) return;
   
   const reader = new FileReader();
   reader.onload = function(e) {
-    const slot = document.querySelector(`#photos-${defectId} [data-slot="${slotIndex}"]`);
+    const slot = document.querySelector(`#photos-${itemId} [data-slot="${slotIndex}"]`);
     const oldImg = slot.querySelector('img');
     if (oldImg) oldImg.remove();
     
@@ -991,57 +1062,76 @@ function handlePhotoUpload(event, defectId, slotIndex) {
     slot.insertBefore(img, slot.firstChild);
     slot.classList.add('has-photo');
     
-    const defect = defects.find(d => d.id === defectId);
-    if (defect) defect.photos[slotIndex] = e.target.result;
+    const item = items.find(d => d.id === itemId);
+    if (item) item.photos[slotIndex] = e.target.result;
   };
   reader.readAsDataURL(file);
 }
 
-function removePhoto(defectId, slotIndex) {
-  const slot = document.querySelector(`#photos-${defectId} [data-slot="${slotIndex}"]`);
+function removePhoto(itemId, slotIndex) {
+  const slot = document.querySelector(`#photos-${itemId} [data-slot="${slotIndex}"]`);
   const img = slot.querySelector('img');
   if (img) img.remove();
   slot.classList.remove('has-photo');
   const input = slot.querySelector('input[type="file"]');
   if (input) input.value = '';
   
-  const defect = defects.find(d => d.id === defectId);
-  if (defect) defect.photos[slotIndex] = null;
+  const item = items.find(d => d.id === itemId);
+  if (item) item.photos[slotIndex] = null;
 }
 
-function updateDefect(id, field, value) {
-  const defect = defects.find(d => d.id === id);
-  if (defect) defect[field] = value;
+function updateItem(id, field, value) {
+  const item = items.find(d => d.id === id);
+  if (item) item[field] = value;
 }
 
-function removeDefect(id) {
+function removeItem(id) {
   if (!confirm('確定刪除此筆紀錄？')) return;
-  defects = defects.filter(d => d.id !== id);
+  items = items.filter(d => d.id !== id);
   render();
   updateStats();
 }
 
 function updateStats() {
-  document.getElementById('stat-total').textContent = defects.length;
+  document.getElementById('stat-total').textContent = items.length;
   
-  const grid = document.getElementById('space-stats-grid');
-  if (defects.length === 0) {
-    grid.innerHTML = '<div class="space-stats-empty">尚無紀錄</div>';
+  const grid = document.getElementById('stats-grid');
+  const title = document.getElementById('stats-mode-title');
+  
+  if (items.length === 0) {
+    grid.innerHTML = '<div class="top-stats-empty">尚無紀錄</div>';
+    title.textContent = '紀錄統計';
     return;
   }
   
-  // 統計每個空間的筆數
-  const counts = {};
-  defects.forEach(d => {
-    counts[d.space] = (counts[d.space] || 0) + 1;
-  });
-  
-  // 按 SPACES 既定順序排列
-  const sortedSpaces = SPACES.filter(s => counts[s]);
-  
-  grid.innerHTML = sortedSpaces.map(s => 
-    `<span class="space-stat-pill">${s}<b>${counts[s]}</b></span>`
-  ).join('');
+  // 統計區根據當前檢視顯示對應分類
+  if (currentView === 'type') {
+    title.textContent = '類型統計';
+    const counts = {};
+    items.forEach(d => counts[d.type] = (counts[d.type] || 0) + 1);
+    grid.innerHTML = TYPES.filter(t => counts[t.key]).map(t => 
+      `<span class="stat-pill ${t.key}">${t.label}<b>${counts[t.key]}</b></span>`
+    ).join('');
+  } else if (currentView === 'trade') {
+    title.textContent = '工種統計';
+    const counts = {};
+    items.forEach(d => counts[d.trade] = (counts[d.trade] || 0) + 1);
+    const sortedTrades = TRADES.filter(t => counts[t]);
+    grid.innerHTML = sortedTrades.map(t => 
+      `<span class="stat-pill space">${t}<b>${counts[t]}</b></span>`
+    ).join('');
+  } else {
+    // space / time 都用空間統計
+    title.textContent = '空間統計';
+    const counts = {};
+    items.forEach(d => counts[d.space] = (counts[d.space] || 0) + 1);
+    const sortedSpaces = SPACES.filter(s => counts[s]).concat(
+      Object.keys(counts).filter(k => !SPACES.includes(k))
+    );
+    grid.innerHTML = sortedSpaces.map(s => 
+      `<span class="stat-pill space">${s}<b>${counts[s]}</b></span>`
+    ).join('');
+  }
 }
 
 function switchView(view, el) {
@@ -1049,6 +1139,7 @@ function switchView(view, el) {
   document.querySelectorAll('.view-switch button').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
   render();
+  updateStats();
 }
 
 function initSignature(canvasId, placeholderId, key) {
@@ -1121,8 +1212,8 @@ function exportPDF() { window.print(); }
 
 function resetForm() {
   if (!confirm('將清空所有紀錄與簽名，確定？')) return;
-  defects = [];
-  defectIdCounter = 0;
+  items = [];
+  itemIdCounter = 0;
   render();
   clearSig('owner');
   clearSig('designer');

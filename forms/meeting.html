@@ -15,10 +15,9 @@
     --line: #D9D2C5;
     --accent: #3A2E1F;
     --space-bg: #EDE5D3;
-    --type-decision: #4A6B3D;
-    --type-todo: #C99A4E;
-    --type-change: #B8551E;
-    --type-question: #5A7BA8;
+    --type-pending: #C99A4E;   /* 待確認 - 橘 */
+    --type-confirmed: #4A6B3D; /* 已確認 - 綠 */
+    --note-bg: #FAF7F1;
   }
   
   html, body {
@@ -37,7 +36,7 @@
     padding: 18px 20px;
     position: sticky; top: 0; z-index: 100;
   }
-  .header-inner { display: flex; align-items: center; gap: 14px; max-width: 900px; margin: 0 auto; }
+  .header-inner { display: flex; align-items: center; gap: 14px; max-width: 1100px; margin: 0 auto; }
   .logo {
     width: 44px; height: 44px;
     border: 1.5px solid var(--ink);
@@ -59,7 +58,7 @@
   }
   .back-link:hover { color: var(--ink); border-color: var(--ink); }
   
-  .container { max-width: 900px; margin: 0 auto; padding: 20px 16px 120px; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 20px 16px 120px; }
   
   .section {
     background: var(--paper);
@@ -70,35 +69,41 @@
   }
   
   .section-header {
-    padding: 16px 20px;
+    padding: 14px 18px;
     border-bottom: 1px solid var(--line);
     display: flex; align-items: center; justify-content: space-between;
     background: linear-gradient(180deg, #FAF7F1, var(--paper));
     gap: 12px;
   }
-  .section-title { font-size: 14px; font-weight: 700; letter-spacing: 1.5px; }
+  .section-title { font-size: 13px; font-weight: 700; letter-spacing: 1.5px; }
   .section-title-en {
     display: block; font-size: 9px; color: var(--ink-soft);
     letter-spacing: 2px; margin-top: 2px; font-weight: 400;
   }
   
-  .section-body { padding: 20px; }
+  .section-body { padding: 18px; }
   
-  /* Form Fields */
-  .field-group { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 20px; }
+  /* ============ Form Fields - 緊湊 4 欄佈局 ============ */
+  .field-group { 
+    display: grid; 
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 14px 18px; 
+  }
+  .field-2 { grid-column: span 2; }
   .field-full { grid-column: 1 / -1; }
+  
   .field { display: flex; flex-direction: column; }
   .field label {
-    font-size: 11px; color: var(--ink-soft);
-    letter-spacing: 1px; margin-bottom: 6px;
+    font-size: 10px; color: var(--ink-soft);
+    letter-spacing: 1.2px; margin-bottom: 4px;
     text-transform: uppercase;
   }
   .field input, .field textarea, .field select {
     border: none;
     border-bottom: 1px solid var(--line);
     background: transparent;
-    padding: 6px 0;
-    font-size: 15px;
+    padding: 5px 0;
+    font-size: 14px;
     font-family: inherit;
     color: var(--ink);
     outline: none;
@@ -108,7 +113,7 @@
   .field input:focus, .field textarea:focus, .field select:focus {
     border-bottom-color: var(--ink);
   }
-  .field textarea { min-height: 60px; resize: vertical; }
+  .field textarea { min-height: 50px; resize: vertical; }
   
   /* View Switcher */
   .view-switch {
@@ -120,8 +125,8 @@
   }
   .view-switch button {
     border: none; background: transparent;
-    padding: 7px 14px;
-    font-size: 12px; font-weight: 600;
+    padding: 6px 12px;
+    font-size: 11px; font-weight: 600;
     cursor: pointer;
     font-family: inherit;
     color: var(--ink-soft);
@@ -137,15 +142,17 @@
     border: 1px solid var(--line);
     border-radius: 4px;
     margin-bottom: 16px;
-    padding: 16px 18px;
-  }
-  .type-stats-header {
+    padding: 12px 16px;
     display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 12px;
+    flex-wrap: wrap; gap: 10px;
   }
   .type-stats-title {
-    font-size: 12px; font-weight: 700;
+    font-size: 11px; font-weight: 700;
     letter-spacing: 1.5px;
+  }
+  .type-stats-grid {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    flex: 1; justify-content: flex-end;
   }
   .type-stats-total {
     font-size: 11px; color: var(--ink-soft);
@@ -156,53 +163,46 @@
     font-size: 14px;
     margin: 0 2px;
   }
-  .type-stats-grid {
-    display: flex; flex-wrap: wrap; gap: 8px;
-  }
   .type-stat-pill {
-    border-radius: 14px;
-    padding: 5px 12px;
-    font-size: 12px;
-    display: inline-flex; align-items: center; gap: 6px;
+    border-radius: 12px;
+    padding: 4px 10px;
+    font-size: 11px;
+    display: inline-flex; align-items: center; gap: 5px;
     color: var(--paper);
   }
   .type-stat-pill b {
     background: rgba(255,255,255,0.25);
-    border-radius: 9px;
-    min-width: 18px;
-    height: 18px;
+    border-radius: 8px;
+    min-width: 16px;
+    height: 16px;
     display: inline-flex; align-items: center; justify-content: center;
     font-size: 10px;
-    padding: 0 5px;
+    padding: 0 4px;
   }
-  .type-stat-pill.decision { background: var(--type-decision); }
-  .type-stat-pill.todo { background: var(--type-todo); }
-  .type-stat-pill.change { background: var(--type-change); }
-  .type-stat-pill.question { background: var(--type-question); }
+  .type-stat-pill.pending { background: var(--type-pending); }
+  .type-stat-pill.confirmed { background: var(--type-confirmed); }
   .type-stats-empty {
     color: var(--ink-soft);
-    font-size: 12px;
+    font-size: 11px;
     letter-spacing: 1px;
   }
   
   /* Group */
   .item-group {
-    margin-bottom: 18px;
+    margin-bottom: 16px;
     border: 1px solid var(--line);
     border-radius: 4px;
     overflow: hidden;
     background: var(--paper);
   }
   .item-group-header {
-    padding: 12px 16px;
+    padding: 10px 14px;
     display: flex; align-items: center; justify-content: space-between;
     border-bottom: 1px solid var(--line);
     color: var(--paper);
   }
-  .item-group-header.decision { background: var(--type-decision); }
-  .item-group-header.todo { background: var(--type-todo); }
-  .item-group-header.change { background: var(--type-change); }
-  .item-group-header.question { background: var(--type-question); }
+  .item-group-header.pending { background: var(--type-pending); }
+  .item-group-header.confirmed { background: var(--type-confirmed); }
   .item-group-header.space { background: var(--space-bg); color: var(--ink); }
   
   .item-group-title {
@@ -215,8 +215,8 @@
     opacity: 0.85;
   }
   .item-group-body {
-    padding: 14px;
-    display: flex; flex-direction: column; gap: 12px;
+    padding: 12px;
+    display: flex; flex-direction: column; gap: 10px;
   }
   
   /* Item Cards */
@@ -229,22 +229,22 @@
   .item-card:focus-within { border-color: var(--ink); }
   
   .item-head {
-    display: flex; align-items: center; gap: 10px;
-    padding: 12px 14px;
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 12px;
     background: #FAF7F1;
     border-bottom: 1px solid var(--line);
     flex-wrap: wrap;
   }
   .item-num {
-    width: 26px; height: 26px;
+    width: 24px; height: 24px;
     background: var(--ink); color: var(--paper);
     display: flex; align-items: center; justify-content: center;
-    font-size: 11px; font-weight: 700;
+    font-size: 10px; font-weight: 700;
     border-radius: 2px;
     flex-shrink: 0;
   }
   .item-type-tag, .item-space-tag {
-    font-size: 11px; font-weight: 600;
+    font-size: 10px; font-weight: 600;
     padding: 3px 8px;
     border-radius: 10px;
     letter-spacing: 0.5px;
@@ -252,10 +252,8 @@
   .item-type-tag {
     color: var(--paper);
   }
-  .item-type-tag.decision { background: var(--type-decision); }
-  .item-type-tag.todo { background: var(--type-todo); }
-  .item-type-tag.change { background: var(--type-change); }
-  .item-type-tag.question { background: var(--type-question); }
+  .item-type-tag.pending { background: var(--type-pending); }
+  .item-type-tag.confirmed { background: var(--type-confirmed); }
   
   .item-space-tag {
     background: var(--space-bg);
@@ -277,15 +275,15 @@
   }
   .item-delete:hover { color: #B8551E; }
   
-  .item-body { padding: 14px; }
+  .item-body { padding: 12px; }
   
-  .item-row {
+  /* item 卡片內也用 4 欄佈局 */
+  .item-fields {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(4, 1fr);
     gap: 12px 14px;
     margin-bottom: 12px;
   }
-  .item-row .field-full { grid-column: 1 / -1; }
   
   .select-wrap {
     position: relative;
@@ -297,7 +295,7 @@
     -webkit-appearance: none;
     border: none;
     background: transparent;
-    padding: 6px 24px 6px 0;
+    padding: 5px 22px 5px 0;
     font-size: 14px;
     font-family: inherit;
     color: var(--ink);
@@ -314,11 +312,38 @@
     font-size: 11px;
   }
   
+  /* 備註區塊（特別樣式凸顯） */
+  .note-field {
+    background: var(--note-bg);
+    border: 1px dashed var(--line);
+    border-radius: 4px;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+  }
+  .note-field label {
+    display: block;
+    font-size: 10px; color: var(--ink-soft);
+    letter-spacing: 1.2px; margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+  .note-field textarea {
+    width: 100%;
+    border: none;
+    background: transparent;
+    padding: 0;
+    font-size: 13px;
+    font-family: inherit;
+    color: var(--ink);
+    outline: none;
+    min-height: 36px;
+    resize: vertical;
+  }
+  
   /* Photo */
-  .photo-area { margin-top: 10px; }
+  .photo-area { margin-top: 8px; }
   .photo-label {
-    font-size: 11px; color: var(--ink-soft);
-    letter-spacing: 1px; margin-bottom: 8px;
+    font-size: 10px; color: var(--ink-soft);
+    letter-spacing: 1.2px; margin-bottom: 6px;
     text-transform: uppercase;
   }
   .photo-grid {
@@ -380,7 +405,7 @@
     border: 1px solid var(--line);
     border-radius: 4px;
     background: var(--paper);
-    height: 140px;
+    height: 130px;
     position: relative;
     overflow: hidden;
   }
@@ -398,7 +423,7 @@
     cursor: pointer; padding: 4px 8px;
   }
   .sig-meta {
-    margin-top: 8px;
+    margin-top: 6px;
     font-size: 11px; color: var(--ink-soft);
     letter-spacing: 1px;
     display: flex; justify-content: space-between;
@@ -414,7 +439,7 @@
     box-shadow: 0 -2px 8px rgba(0,0,0,0.04);
   }
   .action-bar-inner {
-    max-width: 900px; margin: 0 auto;
+    max-width: 1100px; margin: 0 auto;
     display: flex; gap: 10px; width: 100%;
   }
   .action-bar .btn { flex: 1; }
@@ -430,7 +455,7 @@
     letter-spacing: 1px;
     cursor: pointer;
     border-radius: 4px;
-    margin-top: 14px;
+    margin-top: 12px;
     font-family: inherit;
   }
   .add-item-btn:hover { border-color: var(--ink); color: var(--ink); }
@@ -465,9 +490,9 @@
   }
   .modal-sub {
     font-size: 12px; color: var(--ink-soft);
-    margin-bottom: 18px;
+    margin-bottom: 16px;
   }
-  .modal-step { margin-bottom: 18px; }
+  .modal-step { margin-bottom: 16px; }
   .modal-step-label {
     font-size: 11px; color: var(--ink-soft);
     letter-spacing: 1.5px; margin-bottom: 8px;
@@ -475,9 +500,9 @@
   }
   .chip-group { display: flex; flex-wrap: wrap; gap: 6px; }
   .chip {
-    padding: 8px 14px;
+    padding: 7px 13px;
     border: 1px solid var(--line);
-    border-radius: 18px;
+    border-radius: 16px;
     background: var(--paper);
     font-size: 13px;
     cursor: pointer;
@@ -487,17 +512,25 @@
     background: var(--ink); color: var(--paper);
     border-color: var(--ink);
   }
-  /* Type chip 特殊樣式 */
-  .chip.type-chip.active.decision { background: var(--type-decision); border-color: var(--type-decision); }
-  .chip.type-chip.active.todo { background: var(--type-todo); border-color: var(--type-todo); }
-  .chip.type-chip.active.change { background: var(--type-change); border-color: var(--type-change); }
-  .chip.type-chip.active.question { background: var(--type-question); border-color: var(--type-question); }
+  .chip.type-chip.active.pending { background: var(--type-pending); border-color: var(--type-pending); }
+  .chip.type-chip.active.confirmed { background: var(--type-confirmed); border-color: var(--type-confirmed); }
+  
+  .modal-textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 14px;
+    resize: vertical;
+    min-height: 50px;
+  }
   
   .modal-actions {
     display: flex; gap: 10px;
     position: sticky; bottom: 0;
     background: var(--paper);
-    padding-top: 16px;
+    padding-top: 14px;
     margin-top: 8px;
     border-top: 1px solid var(--line);
   }
@@ -521,19 +554,29 @@
     .item-group-header,
     .item-type-tag,
     .item-space-tag,
-    .type-stat-pill {
+    .type-stat-pill,
+    .note-field {
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
     }
   }
   
-  @media (max-width: 640px) {
+  /* 平板/手機響應式 */
+  @media (max-width: 900px) {
+    .field-group { grid-template-columns: repeat(2, 1fr); }
+    .field-2 { grid-column: span 2; }
+    .item-fields { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 540px) {
     .field-group { grid-template-columns: 1fr; }
-    .item-row { grid-template-columns: 1fr; }
+    .field-2, .field-full { grid-column: 1; }
+    .item-fields { grid-template-columns: 1fr; }
     .sig-row { grid-template-columns: 1fr; }
     .container { padding: 14px 12px 110px; }
-    .section-body { padding: 16px; }
+    .section-body { padding: 14px; }
     .section-header { flex-direction: column; align-items: flex-start; }
+    .type-stats { flex-direction: column; align-items: flex-start; }
+    .type-stats-grid { justify-content: flex-start; }
   }
 </style>
 </head>
@@ -552,18 +595,16 @@
 
 <div class="container">
 
-  <!-- 類型統計 -->
+  <!-- 類型統計（緊湊版） -->
   <div class="type-stats">
-    <div class="type-stats-header">
-      <div class="type-stats-title">議題統計</div>
-      <div class="type-stats-total">共 <b id="stat-total">0</b> 筆</div>
-    </div>
+    <div class="type-stats-title">議題統計</div>
     <div class="type-stats-grid" id="type-stats-grid">
       <div class="type-stats-empty">尚無議題</div>
     </div>
+    <div class="type-stats-total">共 <b id="stat-total">0</b> 筆</div>
   </div>
 
-  <!-- 會議基本資訊 -->
+  <!-- 會議資訊（4 欄佈局） -->
   <section class="section">
     <div class="section-header">
       <div>
@@ -585,17 +626,17 @@
           <label>會議時間</label>
           <input type="time" id="meeting-time">
         </div>
-        <div class="field field-full">
+        <div class="field">
           <label>會議地點</label>
-          <input type="text" placeholder="例：工地現場 / 漣一設計辦公室">
+          <input type="text" placeholder="例：工地現場">
         </div>
-        <div class="field field-full">
+        <div class="field">
           <label>會議主題</label>
-          <input type="text" placeholder="例：水電進度檢討 + 廚房櫃體變更討論">
+          <input type="text" placeholder="例：水電進度檢討">
         </div>
         <div class="field field-full">
-          <label>出席人員（請列出姓名與身份）</label>
-          <textarea placeholder="例：&#10;業主 — 周小姐&#10;漣一設計 — 王設計師&#10;木工班 — 陳師傅&#10;水電班 — 李師傅"></textarea>
+          <label>出席人員</label>
+          <textarea placeholder="例:業主周小姐 / 漣一設計王設計師 / 木工陳師傅 / 水電李師傅"></textarea>
         </div>
       </div>
     </div>
@@ -609,7 +650,7 @@
         <span class="section-title-en">DISCUSSION ITEMS</span>
       </div>
       <div class="view-switch">
-        <button class="active" onclick="switchView('type', this)">依類型</button>
+        <button class="active" onclick="switchView('type', this)">依狀態</button>
         <button onclick="switchView('space', this)">依空間</button>
         <button onclick="switchView('time', this)">依時序</button>
       </div>
@@ -630,8 +671,7 @@
     </div>
     <div class="section-body">
       <p style="font-size:13px;color:var(--ink-soft);line-height:1.7;margin-bottom:16px">
-        會議結束後，請業主代表與漣一設計代表確認本次紀錄內容無誤後簽名。<br>
-        簽名後本紀錄即為正式會議文件。
+        會議結束後，請業主代表與漣一設計代表確認本次紀錄內容無誤後簽名。
       </p>
       <div class="sig-row">
         <div>
@@ -639,7 +679,7 @@
             <label>業主代表</label>
             <input type="text">
           </div>
-          <div class="sig-canvas-wrap" style="margin-top:10px">
+          <div class="sig-canvas-wrap" style="margin-top:8px">
             <canvas id="sig-owner"></canvas>
             <div class="sig-placeholder" id="ph-owner">請於此處簽名</div>
             <button class="sig-clear" onclick="clearSig('owner')">清除</button>
@@ -653,7 +693,7 @@
             <label>漣一設計代表</label>
             <input type="text">
           </div>
-          <div class="sig-canvas-wrap" style="margin-top:10px">
+          <div class="sig-canvas-wrap" style="margin-top:8px">
             <canvas id="sig-designer"></canvas>
             <div class="sig-placeholder" id="ph-designer">請於此處簽名</div>
             <button class="sig-clear" onclick="clearSig('designer')">清除</button>
@@ -666,10 +706,9 @@
     </div>
   </section>
 
-  <!-- 公司資訊 -->
   <section class="section">
-    <div class="section-body" style="text-align:center;padding:24px">
-      <div style="font-weight:700;letter-spacing:2px;margin-bottom:6px">漣一設計｜SITE MEETING MINUTES</div>
+    <div class="section-body" style="text-align:center;padding:20px">
+      <div style="font-weight:700;letter-spacing:2px;margin-bottom:4px">漣一設計｜SITE MEETING MINUTES</div>
       <div style="font-size:12px;color:var(--ink-soft);letter-spacing:1px">
         本表單為工地會議正式紀錄文件
       </div>
@@ -682,10 +721,10 @@
 <div class="modal-backdrop" id="quick-add-modal">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="modal-title">新增議題</div>
-    <div class="modal-sub">先選類型與空間，再填細項</div>
+    <div class="modal-sub">先選狀態與空間，再填細項</div>
     
     <div class="modal-step">
-      <div class="modal-step-label">① 議題類型</div>
+      <div class="modal-step-label">① 議題狀態</div>
       <div class="chip-group" id="type-chips"></div>
     </div>
     
@@ -696,8 +735,13 @@
     
     <div class="modal-step">
       <div class="modal-step-label">③ 議題標題</div>
-      <input type="text" id="custom-item" placeholder="例：廚房櫃體高度改 85cm、玄關地磚樣式確認..." 
+      <input type="text" id="custom-item" placeholder="例：廚房櫃體高度改 85cm" 
              style="padding:10px;border:1px solid var(--line);border-radius:4px;width:100%;font-family:inherit;font-size:14px">
+    </div>
+    
+    <div class="modal-step">
+      <div class="modal-step-label">④ 備註（選填）</div>
+      <textarea id="custom-note" class="modal-textarea" placeholder="補充說明、需確認事項、業主提到的相關背景..."></textarea>
     </div>
     
     <div class="modal-actions">
@@ -715,15 +759,12 @@
 </div>
 
 <script>
-/* 議題類型 */
+/* 議題狀態：待確認 / 已確認 */
 const TYPES = [
-  { key: 'decision', label: '決議', desc: '當場拍板確認' },
-  { key: 'todo', label: '待辦', desc: '需後續處理' },
-  { key: 'change', label: '變更', desc: '原規劃調整' },
-  { key: 'question', label: '提問', desc: '業主疑問或需釐清' },
+  { key: 'pending', label: '待確認' },
+  { key: 'confirmed', label: '已確認' },
 ];
 
-/* 空間（與驗收表單一致 + 其他自填） */
 const SPACES = ['玄關', '客廳', '餐廳', '廚房', '主臥', '次臥', '書房', '主衛', '客衛', '陽台', '儲藏室', '全室', '其他'];
 
 let items = [];
@@ -759,22 +800,11 @@ function renderSpaceChips() {
 
 function openQuickAdd() {
   quickAddState = { type: null, space: null };
-  document.querySelectorAll('#type-chips .chip, #space-chips .chip').forEach(c => {
-    c.classList.remove('active', 'decision', 'todo', 'change', 'question');
-    if (c.dataset.custom === 'true') {
-      c.textContent = '其他';
-      delete c.dataset.custom;
-    }
-  });
-  // 還原 type chip 的 class
-  document.querySelectorAll('#type-chips .chip').forEach(c => {
-    const key = c.classList.contains('type-chip') ? null : null;
-    // 重新加上 type class
-    TYPES.forEach(t => {
-      if (c.textContent === t.label) c.classList.add(t.key);
-    });
-  });
+  // 重設 chips
+  renderTypeChips();
+  renderSpaceChips();
   document.getElementById('custom-item').value = '';
+  document.getElementById('custom-note').value = '';
   document.getElementById('quick-add-modal').classList.add('active');
 }
 
@@ -790,9 +820,6 @@ function selectModalChip(type, value, el) {
     value = customSpace.trim();
     el.textContent = value;
     el.dataset.custom = 'true';
-  } else if (type === 'space' && el.dataset.custom === 'true' && el.classList.contains('active')) {
-    el.textContent = '其他';
-    delete el.dataset.custom;
   }
   
   quickAddState[type] = value;
@@ -810,12 +837,13 @@ function selectModalChip(type, value, el) {
 function confirmQuickAdd() {
   const { type, space } = quickAddState;
   const title = document.getElementById('custom-item').value.trim();
+  const note = document.getElementById('custom-note').value.trim();
   
-  if (!type) { alert('請先選擇議題類型'); return; }
+  if (!type) { alert('請先選擇議題狀態'); return; }
   if (!space) { alert('請先選擇相關空間'); return; }
   if (!title) { alert('請輸入議題標題'); return; }
   
-  addItem({ type, space, title });
+  addItem({ type, space, title, note });
   closeQuickAdd();
 }
 
@@ -823,10 +851,11 @@ function addItem(data = {}) {
   const id = ++itemIdCounter;
   items.push({
     id,
-    type: data.type || 'todo',
+    type: data.type || 'pending',
     space: data.space || '客廳',
     title: data.title || '',
     desc: '',
+    note: data.note || '',
     owner: '',
     deadline: '',
     photos: [],
@@ -845,7 +874,7 @@ function render() {
   }
   
   if (currentView === 'time') {
-    container.innerHTML = '<div style="display:flex;flex-direction:column;gap:12px" id="time-list"></div>';
+    container.innerHTML = '<div style="display:flex;flex-direction:column;gap:10px" id="time-list"></div>';
     const list = document.getElementById('time-list');
     [...items].sort((a, b) => a.createdAt - b.createdAt).forEach((d, idx) => {
       list.appendChild(buildItemCard(d, idx + 1));
@@ -920,9 +949,9 @@ function buildItemCard(item, displayNum) {
       <button class="item-delete" onclick="removeItem(${item.id})">×</button>
     </div>
     <div class="item-body">
-      <div class="item-row">
+      <div class="item-fields">
         <div class="field">
-          <label>議題類型</label>
+          <label>議題狀態</label>
           <div class="select-wrap">
             <select onchange="updateItem(${item.id}, 'type', this.value); render(); updateStats()">${typeOptions}</select>
           </div>
@@ -933,17 +962,9 @@ function buildItemCard(item, displayNum) {
             <select onchange="updateItem(${item.id}, 'space', this.value); render()">${spaceOptions}</select>
           </div>
         </div>
-        <div class="field field-full">
-          <label>詳細內容／結論（可口述語音輸入）</label>
-          <textarea placeholder="按 iPad 鍵盤上的麥克風圖示，直接語音輸入文字..." 
-                    onchange="updateItem(${item.id}, 'desc', this.value)">${item.desc}</textarea>
-        </div>
-      </div>
-      
-      <div class="item-row">
         <div class="field">
           <label>負責人</label>
-          <input type="text" placeholder="例：木工陳師傅 / 業主"
+          <input type="text" placeholder="例：木工陳師傅"
                  value="${item.owner || ''}"
                  onchange="updateItem(${item.id}, 'owner', this.value)">
         </div>
@@ -952,10 +973,21 @@ function buildItemCard(item, displayNum) {
           <input type="date" value="${item.deadline || ''}"
                  onchange="updateItem(${item.id}, 'deadline', this.value)">
         </div>
+        <div class="field" style="grid-column: 1 / -1;">
+          <label>詳細內容／結論（可口述語音輸入）</label>
+          <textarea placeholder="按 iPad 鍵盤上的麥克風圖示，直接語音輸入文字..." 
+                    onchange="updateItem(${item.id}, 'desc', this.value)">${item.desc}</textarea>
+        </div>
+      </div>
+      
+      <div class="note-field">
+        <label>📝 備註</label>
+        <textarea placeholder="補充說明、需確認事項..."
+                  onchange="updateItem(${item.id}, 'note', this.value)">${item.note || ''}</textarea>
       </div>
       
       <div class="photo-area">
-        <div class="photo-label">相關照片（點擊上傳/拍照）</div>
+        <div class="photo-label">相關照片（點擊上傳/拍照/從相簿選取）</div>
         <div class="photo-grid" id="photos-${item.id}">
           ${renderPhotoSlots(item.id, 4, item.photos)}
         </div>
@@ -972,7 +1004,7 @@ function renderPhotoSlots(itemId, count, existingPhotos = []) {
     return `
       <label class="photo-slot ${hasPhoto ? 'has-photo' : ''}" data-slot="${i}">
         ${hasPhoto ? `<img src="${hasPhoto}">` : '<span class="plus">+</span>'}
-        <input type="file" accept="image/*" capture="environment" 
+        <input type="file" accept="image/*" 
                onchange="handlePhotoUpload(event, ${itemId}, ${i})">
         <button type="button" class="remove-photo" onclick="event.preventDefault(); removePhoto(${itemId}, ${i})">×</button>
       </label>
